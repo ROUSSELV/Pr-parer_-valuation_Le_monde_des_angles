@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mission révision : le monde des angles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Fredoka:wght@500;600;700&family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FDF6E3; --grid:#F0E4C4; --ink:#231B33; --muted:#5A5468;
+  --violet:#5B3590; --lilac:#CDBFE3; --lilac-soft:#F3EEF8;
+  --green:#1F6F25; --green-soft:#EEF3E2; --orange:#B87800; --orange-soft:#FBF0D6;
+  --red:#C53A2F; --red-soft:#FBE5E2; --blue:#0B3D9E; --blue-soft:#E6ECF8;
+  --card:#FFFCF2; --line:#E6D8B4;
+  --c1:#00651B; --c2:#00389D; --c3:#B97A00; --c4:#5B3590;
+  --arc-a:#F6C343; --arc-b:#7BC67E; --arc-q:#7EB6EA; --tick:#E0413B; --stroke:#22183A;
+  --scale:1; --lh:1.55; --ls:0; --ws:0; --f-body:"Andika","Trebuchet MS",Verdana,sans-serif; --f-head:"Fredoka","Trebuchet MS",sans-serif;
+  color-scheme:light; box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#18132A; --grid:#251E3D; --ink:#EEE8FF; --muted:#B4AACF;
+    --violet:#B99AE6; --lilac:#4A3A66; --lilac-soft:#2A2340;
+    --green:#7CCB7F; --green-soft:#1B3020; --orange:#F2B33D; --orange-soft:#3A2D12;
+    --red:#FF7A70; --red-soft:#46201E; --blue:#8FB0F0; --blue-soft:#18243F;
+    --card:#211A37; --line:#3E3361;
+    --arc-a:#C99A1E; --arc-b:#4E9A54; --arc-q:#3E79AE; --tick:#FF6B61; --stroke:#EEE8FF;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#18132A; --grid:#251E3D; --ink:#EEE8FF; --muted:#B4AACF;
+  --violet:#B99AE6; --lilac:#4A3A66; --lilac-soft:#2A2340;
+  --green:#7CCB7F; --green-soft:#1B3020; --orange:#F2B33D; --orange-soft:#3A2D12;
+  --red:#FF7A70; --red-soft:#46201E; --blue:#8FB0F0; --blue-soft:#18243F;
+  --card:#211A37; --line:#3E3361;
+  --arc-a:#C99A1E; --arc-b:#4E9A54; --arc-q:#3E79AE; --tick:#FF6B61; --stroke:#EEE8FF;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);font-size:calc(16px * var(--scale))}
+body{margin:0;font-family:var(--f-body);font-size:1.125rem;line-height:var(--lh);letter-spacing:var(--ls);word-spacing:var(--ws);color:var(--ink);
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px}
+h1,h2,h3,h4,.tab,.btn,.tile,.lvl,.count,.step,.clock,.score .big,.prop .tag,.role b{font-family:var(--f-head)}
+.wrap{max-width:940px;margin:0 auto;padding:20px 16px 48px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:18px}
+h1{margin:0;font-size:clamp(1.6rem,4vw,2.3rem);line-height:1.1;color:var(--violet);font-weight:700}
+.sub{margin:4px 0 0;color:var(--muted);font-size:1rem}
+.stars{font-family:var(--f-head);font-weight:600;background:var(--card);border:2px solid var(--lilac);border-radius:999px;padding:6px 14px;white-space:nowrap}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tab{border:2px solid var(--lilac);background:var(--card);color:var(--ink);padding:8px 14px;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--violet);border-color:var(--violet);color:var(--paper)}
+.tab .n{display:inline-grid;place-items:center;width:1.5em;height:1.5em;border-radius:50%;background:var(--lilac);color:var(--ink);margin-right:6px;font-size:.85em}
+.tab[aria-selected="true"] .n{background:var(--paper);color:var(--violet)}
+.panel{background:var(--card);border:3px solid var(--line);border-radius:22px;padding:22px clamp(14px,3vw,28px)}
+.panel h2{margin:0 0 4px;font-size:1.45rem}
+.goal{margin:0 0 18px;color:var(--muted)}
+.btn{border:none;border-radius:12px;padding:10px 18px;font-size:1rem;font-weight:600;cursor:pointer;background:var(--violet);color:var(--paper)}
+.btn.ghost{background:transparent;color:var(--violet);border:2px solid var(--violet)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible,input:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+.ang{position:relative;display:inline-block;padding-top:.2em;line-height:1}
+.ang::before{content:"";position:absolute;left:6%;right:6%;top:-.18em;height:.32em;background:currentColor;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M0 9 L50 1 L100 9' fill='none' stroke='black' stroke-width='2.2'/%3E%3C/svg%3E") center/100% 100% no-repeat;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M0 9 L50 1 L100 9' fill='none' stroke='black' stroke-width='2.2'/%3E%3C/svg%3E") center/100% 100% no-repeat}
+.feedback{margin-top:14px;border-radius:14px;padding:12px 14px;font-weight:700}
+.feedback.ok{background:var(--green-soft);color:var(--green)}
+.feedback.ko{background:var(--red-soft);color:var(--red)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (prefers-reduced-motion:no-preference){.pop{animation:pop .35s ease-out}@keyframes pop{from{transform:scale(.97);opacity:.4}to{transform:none;opacity:1}}}
+
+/* Je reconnais */
+.stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:20px;align-items:start}
+@media (max-width:720px){.stage{grid-template-columns:1fr}}
+figure{margin:0;background:var(--paper);border:2px solid var(--line);border-radius:16px;padding:6px}
+figure svg{display:block;width:100%;height:auto}
+.count{font-family:var(--f-head);color:var(--muted);font-weight:600;margin:0 0 8px}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choice{border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:12px;font:inherit;font-weight:700;cursor:pointer;text-align:center}
+.choice.ok{border-color:var(--green);background:var(--green-soft);color:var(--green)}
+.choice.ko{border-color:var(--red);background:var(--red-soft);color:var(--red)}
+
+/* Je restitue */
+.prop{border:3px solid var(--green);border-radius:16px;padding:12px 16px;margin:0 0 12px;background:var(--green-soft);line-height:2.3}
+.prop .tag{font-family:var(--f-head);font-weight:600;color:var(--green);margin-right:6px}
+.blank{display:inline-block;min-width:7.5em;border:none;border-bottom:3px dashed var(--muted);background:var(--card);color:var(--ink);
+  font:inherit;font-weight:700;padding:0 8px;border-radius:8px 8px 0 0;cursor:pointer;line-height:1.7}
+.blank.sel{border-bottom-color:var(--orange);box-shadow:0 0 0 3px var(--orange-soft)}
+.blank.ok{border-bottom:3px solid var(--green);color:var(--green)}
+.blank.ko{border-bottom:3px solid var(--red);color:var(--red);background:var(--red-soft)}
+.bank{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;padding:14px;border-radius:16px;background:var(--lilac-soft);border:2px dashed var(--lilac)}
+.tile{border:2px solid var(--violet);background:var(--card);color:var(--violet);border-radius:10px;padding:6px 12px;font-size:1rem;font-weight:600;cursor:pointer}
+.tile:disabled{opacity:.25;cursor:default}
+
+/* Mon cours */
+.consigne{border:3px solid var(--orange);background:var(--orange-soft);border-radius:18px;padding:14px 18px}
+.consigne h3{margin:0 0 6px;font-size:1.2rem}
+.consigne ol{margin:6px 0 0;padding-left:1.3em}
+.roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:14px 0}
+.role{border:2px solid var(--lilac);border-radius:14px;padding:10px 12px;background:var(--lilac-soft);font-size:.95rem}
+.role b{display:block;font-family:var(--f-head);color:var(--violet)}
+.timer{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:6px 0 16px}
+.clock{font-family:var(--f-head);font-size:2.4rem;font-weight:700;color:var(--violet);min-width:4.2ch;font-variant-numeric:tabular-nums}
+.clock.end{color:var(--red)}
+.todo{display:grid;gap:8px}
+.todo label{display:flex;gap:10px;align-items:flex-start;border:2px solid var(--line);border-radius:12px;padding:8px 12px;cursor:pointer}
+.todo input{margin-top:.35em;width:1.1em;height:1.1em;accent-color:var(--green)}
+.todo label.done{border-color:var(--green);background:var(--green-soft)}
+.corr{margin-top:16px;display:grid;gap:14px}
+.ccard{border:3px dashed var(--orange);border-radius:18px;padding:14px 16px;background:var(--card)}
+.ccard h3{margin:0 0 8px;font-size:1.15rem;color:var(--orange)}
+.cgrid{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+@media (max-width:620px){.cgrid{grid-template-columns:1fr}}
+.cgrid img{display:block;max-width:220px;width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}
+.ans{color:var(--blue);font-weight:700}
+.cprop{border:2px solid var(--green);border-radius:12px;padding:6px 10px;background:var(--green-soft);margin:0 0 8px}
+.ccard p{margin:3px 0}
+
+/* Je démontre */
+.lvl{display:inline-block;border-radius:999px;padding:3px 12px;font-weight:600;font-size:.95rem;margin-bottom:8px}
+.lvl1{background:var(--green-soft);color:var(--green);border:2px solid var(--green)}
+.lvl2{background:var(--orange-soft);color:var(--orange);border:2px solid var(--orange)}
+.lvl3{background:var(--red-soft);color:var(--red);border:2px solid var(--red)}
+.question{font-size:1.1rem;margin:0 0 12px}
+.demo{display:grid;gap:12px;margin-top:6px}
+.sec{border:2px solid var(--line);border-radius:14px;padding:10px 12px;background:var(--card)}
+.sec.ok{border-color:var(--green);background:var(--green-soft)}
+.sec.ko{border-color:var(--red);background:var(--red-soft)}
+.sec h4{margin:0 0 6px;font-family:var(--f-head);font-size:1rem;color:var(--blue)}
+.tpl{line-height:2.4}
+.opts{display:grid;gap:6px}
+.opt{display:flex;gap:10px;align-items:flex-start;border:2px solid var(--line);border-radius:10px;padding:6px 10px;cursor:pointer;background:var(--card);text-align:left;font:inherit;color:var(--ink)}
+.opt[aria-checked="true"]{border-color:var(--violet);background:var(--lilac-soft)}
+.opt .dot{flex:none;width:1em;height:1em;margin-top:.3em;border-radius:50%;border:2px solid var(--violet)}
+.opt[aria-checked="true"] .dot{background:var(--violet)}
+.opt.good{border-color:var(--green);background:var(--green-soft)}
+.opt.bad{border-color:var(--red);background:var(--red-soft)}
+.pick{display:inline-block;min-width:4.5em;border:none;border-bottom:3px dashed var(--violet);background:var(--lilac-soft);color:var(--ink);
+  font:inherit;font-weight:700;padding:0 8px;border-radius:8px 8px 0 0;cursor:pointer;line-height:1.6;position:relative}
+.fill{font:inherit;font-weight:700;color:var(--ink);background:var(--paper);border:none;border-bottom:3px dashed var(--violet);border-radius:8px 8px 0 0;padding:0 6px;line-height:1.6}
+.fill.num{width:3.6em;text-align:center}
+.pick.good,.fill.good{border-bottom:3px solid var(--green);color:var(--green)}
+.pick.bad,.fill.bad{border-bottom:3px solid var(--red);color:var(--red);background:var(--red-soft)}
+.menu{position:absolute;z-index:20;background:var(--card);border:2px solid var(--violet);border-radius:12px;padding:6px;display:grid;gap:4px;box-shadow:0 8px 24px rgba(40,10,80,.25);max-width:min(92vw,440px)}
+.menu button{border:none;background:transparent;color:var(--ink);font:inherit;text-align:left;padding:6px 10px;border-radius:8px;cursor:pointer}
+.menu button:hover,.menu button:focus-visible{background:var(--lilac-soft)}
+.redac{margin-top:14px;border:3px solid var(--orange);background:var(--orange-soft);border-radius:16px;padding:12px 16px}
+.redac p{margin:4px 0}
+.hint{font-size:.95rem;color:var(--muted);margin:0 0 6px}
+
+/* Bilan */
+.score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:10px 0 18px}
+.score{border:3px solid var(--lilac);border-radius:16px;padding:14px;background:var(--lilac-soft)}
+.score .big{font-family:var(--f-head);font-size:2.1rem;font-weight:700;color:var(--violet);line-height:1}
+.score .lab{color:var(--muted)}
+.memo{border:3px solid var(--green);border-radius:16px;padding:12px 16px;background:var(--green-soft)}
+.memo h3{margin:0 0 6px;color:var(--green);font-size:1.15rem}
+.memo ul{margin:0;padding-left:1.2em}
+
+/* Confort de lecture */
+button,input{letter-spacing:inherit;word-spacing:inherit}
+:root[data-font="lexend"]{--f-body:"Lexend",Verdana,sans-serif;--f-head:"Lexend",Verdana,sans-serif}
+:root[data-space="1"]{--lh:1.95;--ls:.04em;--ws:.16em}
+/* Couleurs de fond au choix */
+:root[data-bg="blanc"]{--paper:#FFFFFF;--card:#FFFFFF;--grid:#ECEAF2;--line:#D8D3E2}
+:root[data-bg="bleu"]{--paper:#ECF1FA;--card:#F8FAFE;--grid:#D9E2F3;--line:#C3D0EA}
+:root[data-bg="lavande"]{--paper:#F3EEF6;--card:#FBF9FC;--grid:#E4DAEC;--line:#D3C6E0}
+@media (prefers-color-scheme:dark){
+  :root[data-bg="bleu"]:not([data-theme="light"]){--paper:#121A29;--card:#1A2336;--grid:#1E293D;--line:#33445F}
+  :root[data-bg="lavande"]:not([data-theme="light"]){--paper:#1C1626;--card:#251E31;--grid:#2A2236;--line:#463A58}
+}
+:root[data-grid="0"] body{background-image:none}
+.crow.ccol{flex-direction:column;align-items:stretch;text-align:left;gap:8px}
+.swatches{display:flex;gap:8px;flex-wrap:wrap}
+.sw{width:2.1em;height:2.1em;border-radius:50%;border:2px solid #A79BC4;cursor:pointer;padding:0}
+.sw[aria-pressed="true"]{outline:3px solid var(--violet);outline-offset:2px}
+:root[data-key="1"] .kw{background:var(--orange-soft);border-radius:6px;padding:0 .2em;font-weight:700}
+.goal,.question,.consigne,.prop,.redac,.memo{text-align:left}
+.comfort{position:relative}
+.cbtn{font-family:var(--f-head);font-weight:600;font-size:1rem;border:2px solid var(--violet);color:var(--violet);background:var(--card);border-radius:999px;padding:6px 14px;cursor:pointer}
+.cpanel{position:absolute;right:0;top:calc(100% + 8px);z-index:30;width:min(92vw,330px);background:var(--card);border:3px solid var(--violet);border-radius:18px;padding:14px;box-shadow:0 10px 30px rgba(40,10,80,.25)}
+.cpanel h3{margin:0 0 10px;font-size:1.1rem}
+.crow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+.crow:first-of-type{border-top:none}
+.sizes{display:flex;gap:6px}
+.sizes button{min-width:2.6em;border:2px solid var(--line);background:var(--paper);color:var(--ink);border-radius:10px;padding:4px 8px;font-weight:700;cursor:pointer;font-family:var(--f-head)}
+.sizes button[aria-pressed="true"]{border-color:var(--violet);background:var(--violet);color:var(--paper)}
+.switch{position:relative;width:3em;height:1.6em;flex:none;appearance:none;-webkit-appearance:none;background:var(--line);border-radius:999px;cursor:pointer;margin:0}
+.switch::after{content:"";position:absolute;top:.2em;left:.2em;width:1.2em;height:1.2em;border-radius:50%;background:var(--card);transition:left .15s}
+.switch:checked{background:var(--violet)}
+.switch:checked::after{left:1.6em}
+.say{display:inline-grid;place-items:center;width:2em;height:2em;margin-left:6px;border:2px solid var(--blue);background:var(--blue-soft);color:var(--blue);border-radius:50%;cursor:pointer;font-size:.9rem;vertical-align:middle;line-height:1}
+.say.on{background:var(--blue);color:var(--paper)}
+
+.coach{display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:end;margin:6px 0 16px}
+.coach img{width:150px;height:auto;border-radius:18px;background:#F9FBF9;border:2px solid var(--line)}
+@media (max-width:560px){.coach{grid-template-columns:80px 1fr;align-items:start}.coach img{width:80px}.bubble{padding:10px 12px;font-size:.95rem}.bubble::before{bottom:auto;top:24px}.bubble::after{bottom:auto;top:27px}}
+.bubble{position:relative;align-self:center;background:var(--card);border:3px solid var(--ink);border-radius:26px;padding:14px 18px;font-weight:700;line-height:1.5}
+.bubble::before{content:"";position:absolute;left:-16px;bottom:22px;border:14px solid transparent;border-right-color:var(--ink);border-left:0}
+.bubble::after{content:"";position:absolute;left:-10px;bottom:25px;border:11px solid transparent;border-right-color:var(--card);border-left:0}
+.bubble p{margin:0 0 6px}.bubble p:last-child{margin:0}
+.mode{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:4px 14px;font-family:var(--f-head);font-weight:600;font-size:.95rem;margin:2px 0 10px;border:2px solid}
+.mode.duo{color:var(--blue);background:var(--blue-soft);border-color:var(--blue)}
+.mode.ilot{color:var(--green);background:var(--green-soft);border-color:var(--green)}
+.tab:nth-child(2) .n{background:#DCEBD9}.tab:nth-child(3) .n{background:#DCE4F5}.tab:nth-child(4) .n{background:#F8E7C0}.tab:nth-child(5) .n{background:#E4DAF0}
+.mode.solo{color:var(--orange);background:var(--orange-soft);border-color:var(--orange)}
+.tab:nth-child(6) .n{background:#F8E7C0}.tab:nth-child(7) .n{background:#F6D9D2}
+/* Cours en captures */
+.cpart{border:3px solid var(--line);border-radius:18px;background:var(--card);padding:12px;margin:0 0 16px}
+.cpart h3{margin:0 0 8px;font-size:1.15rem}
+.cpart .shot{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line);background:#fff}
+.reveal{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.cbox{margin-top:12px;border-radius:14px;padding:10px 14px}
+.cbox.p{border:3px solid var(--green);background:var(--green-soft)}
+.cbox.d{border:3px dashed var(--orange);background:var(--paper)}
+.cbox p{margin:3px 0}
+.cbox .step2{margin-top:10px;padding-top:8px;border-top:1px dashed var(--line)}
+/* Exercices du livre */
+.exo{border:3px solid var(--line);border-radius:18px;background:var(--card);padding:14px;margin:0 0 18px}
+.exo h3{margin:0 0 8px;font-size:1.2rem}
+.exo .enonce{display:block;max-width:100%;width:560px;height:auto;border-radius:10px;border:1px solid var(--line);background:#fff}
+.aide{margin-top:10px;border-left:6px solid var(--blue);background:var(--blue-soft);border-radius:10px;padding:8px 12px}
+.aide b{font-family:var(--f-head);color:var(--blue)}
+.ccorr{margin-top:12px;border:3px solid var(--orange);background:var(--orange-soft);border-radius:14px;padding:10px 14px}
+.ccorr p{margin:3px 0}
+.ccorr .step2{margin-top:10px;padding-top:8px;border-top:1px dashed var(--line)}
+.selfcheck{display:flex;gap:10px;align-items:center;margin-top:12px;border:2px solid var(--line);border-radius:12px;padding:8px 12px;cursor:pointer;background:var(--card)}
+.selfcheck input{width:1.15em;height:1.15em;accent-color:var(--green)}
+.selfcheck.done{border-color:var(--green);background:var(--green-soft)}
+
+/* ---- Ajouts révision ---- */
+body{padding-bottom:40px !important}
+:root{--arc-p:#F4A3A8;--arc-o:#F7B26A;--arc-v:#BBA6E6;--line-d:#E39B2E}
+:root[data-theme="dark"],:root:not([data-theme="light"]){}
+.choices.c1{grid-template-columns:1fr}
+.pairname{font-family:var(--f-head);font-weight:600;background:var(--lilac-soft);border:2px solid var(--lilac);border-radius:12px;padding:8px 12px;margin:0 0 10px}
+.phrase{border:3px solid var(--blue);background:var(--blue-soft);border-radius:14px;padding:10px 14px;margin:0 0 10px;font-weight:700}
+.phrase .gap{display:inline-block;min-width:8em;border-bottom:3px dashed var(--blue);color:var(--blue)}
+.why{margin-top:8px;font-weight:400;color:var(--ink)}
+.numrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.numrow .fill{width:5em;text-align:center;font-size:1.2rem}
+.yn{display:flex;gap:10px;margin-top:10px}
+.cardnav{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+.cardnav span{border:2px solid var(--line);border-radius:999px;padding:3px 12px;font-family:var(--f-head);font-weight:600;font-size:.95rem}
+.cardnav span.on{border-color:var(--violet);background:var(--violet);color:var(--paper)}
+.cardnav span.done{border-color:var(--green);background:var(--green-soft);color:var(--green)}
+.qlist{margin:6px 0 0;padding-left:1.3em}
+.qlist li{margin:4px 0}
+.checks{display:grid;gap:8px;margin-top:12px;border:2px dashed var(--lilac);background:var(--lilac-soft);border-radius:14px;padding:10px 12px}
+.checks .ck{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.checks .fill{width:4.6em;text-align:center}
+.checks .res{font-weight:700}
+.checks .res.ok{color:var(--green)} .checks .res.ko{color:var(--red)}
+.exo figure{max-width:460px}
+.expert-banner{border:3px solid var(--red);background:var(--red-soft);border-radius:16px;padding:10px 14px;margin:0 0 14px;font-weight:700;color:var(--red)}
+.tab:nth-child(8) .n{background:#DCEBD9}.tab:nth-child(9) .n{background:#F6D9D2}.tab:nth-child(10) .n{background:#E4DAF0}
+.best{font-size:.9rem;color:var(--muted)}
+.locknote{font-size:.95rem;color:var(--muted);margin:8px 0 0}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--arc-p:#B5585E;--arc-o:#B9772F;--arc-v:#7C64B3;--line-d:#E3A13E}}
+:root[data-theme="dark"]{--arc-p:#B5585E;--arc-o:#B9772F;--arc-v:#7C64B3;--line-d:#E3A13E}
+.multi{border:3px solid var(--orange);background:var(--orange-soft);border-radius:14px;padding:8px 14px;margin:0 0 14px;text-align:left}
+.opt .dot.box{border-radius:4px}
+.opt[aria-checked="true"] .dot.box{background:var(--violet);box-shadow:inset 0 0 0 2px var(--card)}
+.rate{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;border:3px solid var(--violet);background:var(--lilac-soft);border-radius:18px;padding:14px 18px;margin:8px 0 16px}
+.rate .pct{font-family:var(--f-head);font-size:3rem;font-weight:700;color:var(--violet);line-height:1}
+.bar{height:16px;border-radius:999px;background:var(--card);border:2px solid var(--lilac);overflow:hidden}
+.bar>span{display:block;height:100%;background:var(--violet)}
+.mrow{display:grid;grid-template-columns:minmax(0,1.6fr) 5em minmax(0,1fr);gap:10px;align-items:center;padding:6px 0;border-top:1px solid var(--line)}
+.mrow:first-child{border-top:none}
+.mrow .bar{height:12px}
+.mrow b{font-family:var(--f-head)}
+.forts{border:3px solid var(--green);background:var(--green-soft);border-radius:16px;padding:12px 16px;margin:0 0 12px}
+.forts h3{margin:0 0 6px;color:var(--green);font-size:1.15rem}
+.axes{border:3px solid var(--orange);background:var(--orange-soft);border-radius:16px;padding:12px 16px;margin:0 0 12px}
+.axes h3{margin:0 0 6px;color:var(--orange);font-size:1.15rem}
+.forts ul,.axes ul{margin:0;padding-left:1.2em}.forts li,.axes li{margin:3px 0}
+.axes .adv{color:var(--muted);font-size:.95rem}
+:root{--c-sec:#D0342C;--c-lin:#2F6FD6;--c-dim:#B8B2C4;--c-a1:#C0601A;--c-a2:#6B4FB5}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--c-sec:#FF7A70;--c-lin:#7FB0FF;--c-dim:#5A5468;--c-a1:#F2A25B;--c-a2:#B9A3F2}}
+.cs{color:var(--c-sec)} .cl{color:var(--c-lin)} .ca1{color:var(--c-a1)} .ca2{color:var(--c-a2)}
+.corrfig{display:grid;grid-template-columns:minmax(0,220px) 1fr;gap:12px;align-items:center;margin-top:8px}
+.corrfig figure{margin:0;background:var(--card);border:2px solid var(--line);border-radius:12px;padding:4px}
+.corrfig .legend{font-size:.85rem;text-align:center;font-weight:700}
+@media (max-width:560px){.corrfig{grid-template-columns:1fr}}
+.minis{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.mini{margin:0;background:var(--card);border:2px solid var(--line);border-radius:12px;padding:4px;width:150px}
+.mini svg{width:100%;height:auto}
+.mini figcaption{font-size:.8rem;text-align:center;font-weight:700;line-height:1.2}
+.forts .adv{color:var(--muted);font-size:.95rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Mission révision : le monde des angles</h1>
+      <p class="sub">Vocabulaire, angles alternes-internes et correspondants, parallélisme, triangles : prépare ton évaluation à ton rythme.</p>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <div class="comfort">
+        <button class="cbtn" id="cbtn" aria-expanded="false" aria-controls="cpanel">Aa Confort de lecture</button>
+        <div class="cpanel" id="cpanel" hidden>
+          <h3>Confort de lecture</h3>
+          <div class="crow"><span>Taille du texte</span><span class="sizes" id="sizes">
+            <button data-s="1" aria-label="Texte normal">A</button><button data-s="1.15" aria-label="Texte grand">A+</button><button data-s="1.3" aria-label="Texte très grand">A++</button></span></div>
+          <label class="crow"><span>Police très lisible</span><input type="checkbox" class="switch" data-opt="font"></label>
+          <label class="crow"><span>Texte plus aéré</span><input type="checkbox" class="switch" data-opt="space"></label>
+          <div class="crow ccol"><span>Couleur de fond</span><span class="swatches" id="swatches">
+            <button class="sw" data-bg="cartes" style="background:#FDF6E3" aria-label="Crème" title="Crème"></button>
+            <button class="sw" data-bg="blanc" style="background:#FFFFFF" aria-label="Blanc" title="Blanc"></button>
+            <button class="sw" data-bg="bleu" style="background:#ECF1FA" aria-label="Bleu pâle" title="Bleu pâle"></button>
+            <button class="sw" data-bg="lavande" style="background:#F3EEF6" aria-label="Lavande" title="Lavande"></button>
+          </span></div>
+          <label class="crow"><span>Quadrillage en fond</span><input type="checkbox" class="switch" data-opt="grid"></label>
+          <label class="crow"><span>Mots-clés surlignés</span><input type="checkbox" class="switch" data-opt="key"></label>
+          <label class="crow"><span>Lecture à voix haute 🔊</span><input type="checkbox" class="switch" data-opt="audio"></label>
+        </div>
+      </div>
+      <div class="stars" id="stars" aria-live="polite">★ 0</div>
+    </div>
+  </header>
+  <nav role="tablist" id="tabs"></nav>
+  <main id="panel" class="panel"></main>
+</div>
+<script>
+const AVATAR="data:image/webp;base64,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";
+/* ---------- Outils ---------- */
+const $ = s => document.querySelector(s);
+const rnd = (a,b) => a + Math.floor(Math.random()*(b-a+1));
+const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+const shuffle = arr => { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+const ang = n => `<span class="ang">${n}</span>`;
+const norm = s => String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[°.]/g,"").replace(/[-’']/g," ").replace(/\s+/g," ").trim();
+const A = x => `<span class="ans">${x}</span>`;
+const TT = {ai:"alternes-internes", corr:"correspondants"};
+
+/* ---------- Géométrie ---------- */
+const rad=d=>d*Math.PI/180;
+const dir=a=>({x:Math.cos(rad(a)),y:Math.sin(rad(a))});
+const vadd=(p,q)=>({x:p.x+q.x,y:p.y+q.y}), vsub=(p,q)=>({x:p.x-q.x,y:p.y-q.y}), vmul=(p,k)=>({x:p.x*k,y:p.y*k});
+const vlen=p=>Math.hypot(p.x,p.y), vunit=p=>{const l=vlen(p)||1;return {x:p.x/l,y:p.y/l};};
+const cross=(p,q)=>p.x*q.y-p.y*q.x;
+const lerp=(p,q,t)=>vadd(p,vmul(vsub(q,p),t));
+function inter(p1,p2,p3,p4){const d1=vsub(p2,p1),d2=vsub(p4,p3),den=cross(d1,d2);const t=cross(vsub(p3,p1),d2)/den;return vadd(p1,vmul(d1,t));}
+const LETTERS="ABCDEFGHJKLMNPRSTUVWXYZ".split("");
+const ARC={a:"var(--arc-a)",b:"var(--arc-b)",q:"var(--arc-q)",p:"var(--arc-p)",o:"var(--arc-o)",v:"var(--arc-v)"};
+
+function Fig(){return {pts:{},lines:[],arcs:[],rights:[],marks:[]};}
+function pt(f,k,p,o={}){f.pts[k]={x:p.x,y:p.y,tick:!!o.tick,name:o.name||null,ld:o.ld};return k;}
+function line(f,ids,o={}){f.lines.push({ids,lab:o.lab||null,ext:o.ext||(o.lab?[18,34]:[18,18]),col:o.col||null,w:o.w||null});}
+function nameAll(f){const used=new Set(Object.values(f.pts).map(p=>p.name).filter(Boolean));const pool=shuffle(LETTERS.filter(l=>!used.has(l)));Object.values(f.pts).forEach(p=>{if(!p.name)p.name=pool.pop();});return f;}
+function mirror(f){Object.values(f.pts).forEach(p=>p.x=-p.x);return f;}
+function rotate(f,a){const c=Math.cos(rad(a)),s=Math.sin(rad(a));Object.values(f.pts).forEach(p=>{const x=p.x,y=p.y;p.x=c*x-s*y;p.y=s*x+c*y;});return f;}
+const N=(f,k)=>f.pts[k].name;
+const aName=(f,X)=>N(f,X.a)+N(f,X.v)+N(f,X.b);
+function lname(f,i){const L=f.lines[i];if(L.lab)return L.lab;const named=L.ids.filter(k=>!f.pts[k].tick);const u=named.length>=2?named:L.ids;return "("+N(f,u[0])+N(f,u[u.length-1])+")";}
+
+function renderFig(f,o={}){
+  const W=o.W||400,H=o.H||300,P=o.P||(f.lines.some(L=>L.lab)?62:42);
+  const ks=Object.keys(f.pts),xs=ks.map(k=>f.pts[k].x),ys=ks.map(k=>f.pts[k].y);
+  const minx=Math.min(...xs),maxx=Math.max(...xs),miny=Math.min(...ys),maxy=Math.max(...ys);
+  const s=Math.min((W-2*P)/((maxx-minx)||1),(H-2*P)/((maxy-miny)||1));
+  const ox=(W-(maxx-minx)*s)/2,oy=(H-(maxy-miny)*s)/2;
+  const T={};ks.forEach(k=>T[k]={x:ox+(f.pts[k].x-minx)*s,y:H-oy-(f.pts[k].y-miny)*s});
+  const fx=n=>n.toFixed(1);
+  let svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.alt||"Figure de géométrie"}">`;
+  const obst={};ks.forEach(k=>obst[k]=[]);
+  let labels="";
+  f.arcs.forEach(a=>{
+    const v=T[a.v],u=vunit(vsub(T[a.a],v)),w=vunit(vsub(T[a.b],v)),r=a.r||25;
+    const st=vadd(v,vmul(u,r)),en=vadd(v,vmul(w,r)),sw=cross(u,w)>0?1:0;
+    svg+=`<path d="M${fx(v.x)},${fx(v.y)} L${fx(st.x)},${fx(st.y)} A${r},${r} 0 0 ${sw} ${fx(en.x)},${fx(en.y)} Z" fill="${ARC[a.c||"a"]}" fill-opacity=".9"/>`;
+    let b=vadd(u,w);b=vlen(b)<0.08?{x:-u.y,y:u.x}:vunit(b);
+    obst[a.v].push(Math.atan2(b.y,b.x));
+    if(a.label){const lp=vadd(v,vmul(b,r+(String(a.label).length>3?21:16)));
+      labels+=`<text x="${fx(lp.x)}" y="${fx(lp.y)}" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka, sans-serif" font-weight="600" font-size="15" fill="var(--ink)" paint-order="stroke" stroke="var(--paper)" stroke-width="3">${a.label}</text>`;}
+  });
+  f.rights.forEach(rt=>{const v=T[rt.v],u=vunit(vsub(T[rt.a],v)),w=vunit(vsub(T[rt.b],v)),k=12;
+    const p1=vadd(v,vmul(u,k)),p2=vadd(p1,vmul(w,k)),p3=vadd(v,vmul(w,k));
+    svg+=`<path d="M${fx(p1.x)},${fx(p1.y)} L${fx(p2.x)},${fx(p2.y)} L${fx(p3.x)},${fx(p3.y)}" fill="none" stroke="var(--tick)" stroke-width="2.2"/>`;
+    const b=vunit(vadd(u,w));obst[rt.v].push(Math.atan2(b.y,b.x));});
+  f.lines.forEach(L=>{
+    const p=T[L.ids[0]],q=T[L.ids[L.ids.length-1]],d=vunit(vsub(q,p));
+    const a=vsub(p,vmul(d,L.ext[0])),b=vadd(q,vmul(d,L.ext[1]));
+    svg+=`<line x1="${fx(a.x)}" y1="${fx(a.y)}" x2="${fx(b.x)}" y2="${fx(b.y)}" stroke="${L.col||"var(--stroke)"}" stroke-width="${L.w||2.6}" stroke-linecap="round"/>`;
+    L.ids.forEach((k,i)=>{
+      if(i>0||L.ext[0]>0){const t=i>0?vsub(T[L.ids[i-1]],T[k]):vmul(d,-1);obst[k].push(Math.atan2(t.y,t.x));}
+      if(i<L.ids.length-1||L.ext[1]>0){const t=i<L.ids.length-1?vsub(T[L.ids[i+1]],T[k]):d;obst[k].push(Math.atan2(t.y,t.x));}
+    });
+    if(L.lab){const n={x:-d.y,y:d.x};const lp=vadd(b,vmul(d,15));
+      labels+=`<text x="${fx(lp.x)}" y="${fx(lp.y)}" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka, sans-serif" font-weight="600" font-size="15" fill="${L.col||"var(--ink)"}">${L.lab}</text>`;}
+  });
+  f.marks.forEach(([i,j,n])=>{const m=vmul(vadd(T[i],T[j]),.5),d=vunit(vsub(T[j],T[i])),nn={x:-d.y,y:d.x};
+    for(let k=0;k<n;k++){const c=vadd(m,vmul(d,(k-(n-1)/2)*6)),s1=vadd(c,vmul(nn,7)),s2=vadd(c,vmul(nn,-7));
+      svg+=`<line x1="${fx(s1.x)}" y1="${fx(s1.y)}" x2="${fx(s2.x)}" y2="${fx(s2.y)}" stroke="var(--tick)" stroke-width="2.4" stroke-linecap="round"/>`;}});
+  ks.forEach(k=>{const p=f.pts[k];if(!p.tick)return;
+    const L=f.lines.find(L=>L.ids.includes(k));let d={x:1,y:0};
+    if(L){const a=T[L.ids[0]],b=T[L.ids[L.ids.length-1]];d=vunit(vsub(b,a));}
+    const n={x:-d.y,y:d.x},c=T[k];
+    [d,n].forEach(e=>{const s1=vadd(c,vmul(e,6)),s2=vadd(c,vmul(e,-6));
+      svg+=`<line x1="${fx(s1.x)}" y1="${fx(s1.y)}" x2="${fx(s2.x)}" y2="${fx(s2.y)}" stroke="var(--tick)" stroke-width="2.4" stroke-linecap="round"/>`;});
+  });
+  svg+=labels;
+  ks.forEach(k=>{const p=f.pts[k];if(!p.name||p.hide)return;
+    let a;
+    if(p.ld!==undefined) a=rad(p.ld);
+    else{const ob=obst[k].map(x=>(x+2*Math.PI)%(2*Math.PI)).sort((x,y)=>x-y);
+      if(!ob.length) a=-Math.PI/2;
+      else{let best=-1;a=0;for(let i=0;i<ob.length;i++){const x=ob[i],y=i<ob.length-1?ob[i+1]:ob[0]+2*Math.PI;const g=y-x;if(g>best+1e-6){best=g;a=x+g/2;}}}}
+    const lp=vadd(T[k],{x:Math.cos(a)*16,y:Math.sin(a)*16});
+    svg+=`<text x="${fx(lp.x)}" y="${fx(lp.y)}" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="17" fill="var(--ink)">${p.name}</text>`;});
+  return svg+`</svg>`;
+}
+
+/* ---------- Analyse des angles d'une figure ---------- */
+function anglesOf(f,onlyNamed){const out=[];
+  Object.keys(f.pts).forEach(v=>{if(f.pts[v].tick)return;
+    const ls=f.lines.map((L,i)=>({i,ids:L.ids,k:L.ids.indexOf(v)})).filter(o=>o.k>=0);
+    for(let x=0;x<ls.length;x++)for(let y=x+1;y<ls.length;y++){
+      const r1=[ls[x].ids[ls[x].k-1],ls[x].ids[ls[x].k+1]].filter(Boolean),r2=[ls[y].ids[ls[y].k-1],ls[y].ids[ls[y].k+1]].filter(Boolean);
+      r1.forEach(a=>r2.forEach(b=>out.push({v,a,b})));}});
+  return out;}
+function rayOf(f,v,t){for(let i=0;i<f.lines.length;i++){const ids=f.lines[i].ids,a=ids.indexOf(v),b=ids.indexOf(t);if(a>=0&&b>=0)return {li:i,s:Math.sign(b-a)};}return null;}
+function classify(f,X,Y){
+  const res={t:"none",same:false};
+  if(X.v===Y.v){res.same=true;
+    const r=[rayOf(f,X.v,X.a),rayOf(f,X.v,X.b)],q=[rayOf(f,Y.v,Y.a),rayOf(f,Y.v,Y.b)];
+    const eq=(a,b)=>a.li===b.li&&a.s===b.s,op=(a,b)=>a.li===b.li&&a.s===-b.s;
+    const sh=r.filter(a=>q.some(b=>eq(a,b))).length;
+    if(sh===2)res.t="same";else if(sh===1)res.t="adj";else if(r.every(a=>q.some(b=>op(a,b))))res.t="opp";
+    return res;}
+  const li=f.lines.findIndex(L=>L.ids.includes(X.v)&&L.ids.includes(Y.v));
+  if(li<0){res.nosec=true;return res;}
+  const ids=f.lines[li].ids,D=vsub(f.pts[Y.v],f.pts[X.v]);
+  const part=(Z,other)=>{const ra=rayOf(f,Z.v,Z.a),rb=rayOf(f,Z.v,Z.b);let s,n;
+    if(ra.li===li&&rb.li!==li){s=Z.a;n=Z.b;}else if(rb.li===li&&ra.li!==li){s=Z.b;n=Z.a;}else return null;
+    const tw=Math.sign(ids.indexOf(s)-ids.indexOf(Z.v))===Math.sign(ids.indexOf(other)-ids.indexOf(Z.v));
+    return {between:tw,side:Math.sign(cross(D,vsub(f.pts[n],f.pts[Z.v]))),line:rayOf(f,Z.v,n).li};};
+  const p=part(X,Y.v),q=part(Y,X.v);if(!p||!q){res.nosec=true;return res;}
+  Object.assign(res,{sec:li,p,q});
+  if(p.between&&q.between&&p.side!==q.side)res.t="ai";
+  else if(p.between!==q.between&&p.side===q.side)res.t="corr";
+  return res;}
+function reasonsOf(c){
+  if(c.same) return {ai:{side:false,betw:false,vertex:true},corr:{side:false,two:false,zero:false,vertex:true}};
+  return {ai:{side:c.p.side===c.q.side,betw:!(c.p.between&&c.q.between),vertex:false},
+          corr:{side:c.p.side!==c.q.side,two:c.p.between&&c.q.between,zero:!c.p.between&&!c.q.between,vertex:false}};}
+const R_TXT={ai:{side:"ils ne sont pas de part et d’autre de la sécante",betw:"ils ne sont pas tous les deux situés entre les deux droites",vertex:"ils ont le même sommet"},
+  corr:{side:"ils ne sont pas du même côté de la sécante",two:"ils sont tous les deux situés entre les deux droites (il en faut un seul)",zero:"aucun des deux n’est situé entre les deux droites (il en faut un seul)",vertex:"ils ont le même sommet"}};
+const CS=t=>`<b class="cs">${t}</b>`,CL=t=>`<b class="cl">${t}</b>`,CA1=t=>`<b class="ca1">${t}</b>`,CA2=t=>`<b class="ca2">${t}</b>`;
+function explain(f,c,X,Y){
+  const head=X?`Les angles ${CA1(aName(f,X))} et ${CA2(aName(f,Y))} : `:"";
+  if(c.t==="opp") return head+"ils ont le même sommet et leurs côtés sont dans le prolongement l’un de l’autre : ils sont <b>opposés par le sommet</b>.";
+  if(c.t==="adj") return head+"ils ont le même sommet, un côté commun, et leurs autres côtés forment une droite (un angle plat) : la somme de leurs mesures est égale à 180°, ils sont <b>supplémentaires</b>.";
+  const sec=CS(lname(f,c.sec)),l1=CL(lname(f,c.p.line)),l2=CL(lname(f,c.q.line));
+  if(c.t==="ai") return head+`ils sont de part et d’autre de la sécante ${sec}, tous les deux entre les droites ${l1} et ${l2}, et n’ont pas le même sommet : ils sont <b>alternes-internes</b>.`;
+  if(c.t==="corr") return head+`ils sont du même côté de la sécante ${sec}, un seul est entre les droites ${l1} et ${l2}, et ils n’ont pas le même sommet : ils sont <b>correspondants</b>.`;
+  const r=reasonsOf(c);const ra=Object.keys(r.ai).filter(k=>r.ai[k]).map(k=>R_TXT.ai[k]),rc=Object.keys(r.corr).filter(k=>r.corr[k]).map(k=>R_TXT.corr[k]);
+  return head+`la sécante est ${sec}, les droites sont ${l1} et ${l2}. Ils ne sont pas alternes-internes car ${ra.join(" et ")}. Ils ne sont pas correspondants car ${rc.join(" et ")}. Ce n’est <b>aucun de ces cas</b>.`;}
+/* figure de correction : sécante en rouge, les deux droites en bleu, les deux angles colorés */
+function corrFig(f,X,Y,c){
+  const g={pts:JSON.parse(JSON.stringify(f.pts)),lines:f.lines.map(L=>({...L})),arcs:[{...X,c:"o"},{...Y,c:"v"}],rights:[],marks:[]};
+  let hl=[],sec=null;
+  if(c.same){const lv=f.lines.map((L,i)=>L.ids.includes(X.v)?i:-1).filter(i=>i>=0);hl=lv;}
+  else{sec=c.sec;hl=[c.p.line,c.q.line];}
+  g.lines.forEach((L,i)=>{if(i===sec){L.col="var(--c-sec)";L.w=3.8;}else if(hl.includes(i)){L.col="var(--c-lin)";L.w=3.6;}else{L.col="var(--c-dim)";L.w=1.6;}});
+  return renderFig(g,{alt:"Figure de correction"})+`<figcaption class="legend">${sec!==null?`<span class="cs">━ sécante</span> `:""}<span class="cl">━ ${sec!==null?"les deux droites":"les droites"}</span></figcaption>`;}
+function pairsOf(f,type,filt){const As=anglesOf(f),out=[];
+  for(let i=0;i<As.length;i++)for(let j=i+1;j<As.length;j++){const c=classify(f,As[i],As[j]);
+    if(c.t==="same")continue;if(c.t==="none"&&c.nosec&&!c.same)continue;if(c.same&&c.t==="none")continue;
+    if(type&&c.t!==type)continue;if(filt&&!filt(c,As[i],As[j]))continue;out.push([As[i],As[j],c]);}
+  return out;}
+
+/* ---------- Figures types ---------- */
+function makeF1(o={}){
+  const f=Fig();const phi=o.phi??pick([rnd(55,75),rnd(105,125)]);const psi1=o.psi1??rnd(-12,12);const psi2=o.psi2??psi1;
+  const L=o.gap||rnd(110,135);const Ap={x:0,y:0},Bp=vmul(dir(phi),-L);
+  pt(f,"A",Ap);pt(f,"B",Bp);
+  pt(f,"P1",vmul(dir(psi1),-rnd(105,140)),{tick:true});pt(f,"P2",vmul(dir(psi1),rnd(105,140)),{tick:true});
+  pt(f,"Q1",vadd(Bp,vmul(dir(psi2),-rnd(105,140))),{tick:true});pt(f,"Q2",vadd(Bp,vmul(dir(psi2),rnd(105,140))),{tick:true});
+  pt(f,"S1",vmul(dir(phi),rnd(55,70)),{tick:true});pt(f,"S2",vadd(Bp,vmul(dir(phi),-rnd(55,70))),{tick:true});
+  const lab=!!o.lab,col=o.col?"var(--line-d)":null;
+  line(f,["P1","A","P2"],{lab:lab?"(d)":null,col});line(f,["Q1","B","Q2"],{lab:lab?"(d′)":null,col});line(f,["S1","A","B","S2"],{lab:lab?"(Δ)":null});
+  f.sec={A:[{v:"A",a:"P2",b:"S1"},{v:"A",a:"S1",b:"P1"},{v:"A",a:"P1",b:"B"},{v:"A",a:"B",b:"P2"}],
+         B:[{v:"B",a:"Q2",b:"A"},{v:"B",a:"A",b:"Q1"},{v:"B",a:"Q1",b:"S2"},{v:"B",a:"S2",b:"Q2"}]};
+  const m1=phi-psi1,m2=phi-psi2;f.meas={A:q=>q%2===0?m1:180-m1,B:q=>q%2===0?m2:180-m2};
+  return f;}
+function makeF2(){const f=Fig();
+  const Ap={x:rnd(-30,30),y:210},Bp={x:-130,y:rnd(-10,10)},Cp={x:rnd(120,150),y:rnd(-15,15)};
+  const Dp=lerp(Ap,Bp,rnd(38,50)/100),Ep=lerp(Ap,Cp,rnd(38,50)/100);
+  pt(f,"A",Ap);pt(f,"B",Bp);pt(f,"C",Cp);pt(f,"D",Dp);pt(f,"E",Ep);
+  pt(f,"B2",lerp(Ap,Bp,1.2),{tick:true});pt(f,"C2",lerp(Ap,Cp,1.2),{tick:true});
+  pt(f,"X",lerp(Ep,Dp,1.45),{tick:true});pt(f,"Y",lerp(Dp,Ep,1.45),{tick:true});
+  pt(f,"B3",lerp(Cp,Bp,1.15),{tick:true});pt(f,"C3",lerp(Bp,Cp,1.15),{tick:true});
+  line(f,["A","D","B","B2"],{ext:[0,14]});line(f,["A","E","C","C2"],{ext:[0,14]});line(f,["X","D","E","Y"]);line(f,["B3","B","C","C3"]);
+  return f;}
+function makeF3(){const f=Fig();
+  const Ap={x:-rnd(40,60),y:150},Cp={x:rnd(40,60),y:150+rnd(-8,8)},Bp={x:-rnd(60,85),y:rnd(-8,8)},Dp={x:rnd(60,85),y:0};
+  const Op=inter(Ap,Dp,Cp,Bp);
+  pt(f,"A",Ap);pt(f,"B",Bp);pt(f,"C",Cp);pt(f,"D",Dp);pt(f,"O",Op);
+  pt(f,"P1",lerp(Cp,Ap,2.0),{tick:true});pt(f,"P2",lerp(Ap,Cp,2.0),{tick:true});
+  pt(f,"Q1",lerp(Dp,Bp,1.7),{tick:true});pt(f,"Q2",lerp(Bp,Dp,1.7),{tick:true});
+  pt(f,"T1",lerp(Dp,Ap,1.3),{tick:true});pt(f,"T2",lerp(Ap,Dp,1.3),{tick:true});
+  pt(f,"U1",lerp(Bp,Cp,1.3),{tick:true});pt(f,"U2",lerp(Cp,Bp,1.3),{tick:true});
+  line(f,["P1","A","C","P2"]);line(f,["Q1","B","D","Q2"]);line(f,["T1","A","O","D","T2"]);line(f,["U1","C","O","B","U2"]);
+  return f;}
+function makeF4(){const f=Fig();const phi=pick([rnd(58,75),rnd(105,122)]);const L1=rnd(85,105),L2=rnd(85,105);
+  const Ap={x:0,y:0},Bp=vmul(dir(phi),-L1),Cp=vadd(Bp,vmul(dir(phi),-L2));
+  pt(f,"A",Ap);pt(f,"B",Bp);pt(f,"C",Cp);
+  [["A",Ap],["B",Bp],["C",Cp]].forEach(([k,p])=>{const ps=rnd(-10,10);pt(f,k+"1",vadd(p,vmul(dir(ps),-rnd(100,135))),{tick:true});pt(f,k+"2",vadd(p,vmul(dir(ps),rnd(100,135))),{tick:true});line(f,[k+"1",k,k+"2"]);});
+  pt(f,"S1",vmul(dir(phi),55),{tick:true});pt(f,"S2",vadd(Cp,vmul(dir(phi),-55)),{tick:true});
+  line(f,["S1","A","B","C","S2"]);
+  return f;}
+function prep(f){if(Math.random()<.5)mirror(f);return nameAll(f);}
+
+/* ---------- État général ---------- */
+const state={tab:0,m1:null,m2:null,m3:null,m4:null,m5:null,m6:null,ex:{},xp:{}};
+const TABS=["Accueil","Vocabulaire","Je reconnais","Je justifie","Mon cours par cœur","Je calcule","Je démontre","Je m’entraîne","Mode expert","Mon bilan"];
+const TABN=["★","1","2","3","4","5","6","7","🏆","✓"];
+const BEST_KEY="mra-best-v1";let best={};try{best=JSON.parse(localStorage.getItem(BEST_KEY)||"{}")||{};}catch(e){best={};}
+function saveBest(k,v){if(!(best[k]>=v)){best[k]=v;try{localStorage.setItem(BEST_KEY,JSON.stringify(best));}catch(e){}}}
+function m4score(){return state.m4?state.m4.cards.reduce((s,c)=>s+(c.checked?c.score:0),0):0;}
+function xpscore(){return [...Object.values(state.xp),...Object.values(state.ex)].reduce((s,x)=>s+(x.pts||0),0);}
+function stars(){const s=(state.m1?state.m1.score:0)+(state.m2?state.m2.score:0)+(state.m3?state.m3.score:0)+m4score()+(state.m5?state.m5.score:0)+(state.m6?state.m6.score:0)+xpscore();$("#stars").textContent="★ "+s;}
+function renderTabs(){
+  $("#tabs").innerHTML=TABS.map((t,i)=>`<button class="tab" role="tab" aria-selected="${i===state.tab}" data-i="${i}"><span class="n">${TABN[i]}</span>${t}</button>`).join("");
+  document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>goTab(+b.dataset.i));}
+const RENDER=[];
+function render(){if(window.speechSynthesis)speechSynthesis.cancel();closeMenu();renderTabs();stars();RENDER[state.tab]();enhance();}
+const goTab=i=>{state.tab=i;render();window.scrollTo({top:0});};
+function coach(lines){return `<div class="coach"><img src="${AVATAR}" alt="Ton professeur"><div class="bubble">${lines.map(l=>`<p>${l}</p>`).join("")}</div></div>`;}
+function endScreen(title,score,max,okMsg,koMsg,next,again){
+  const ok=score>=Math.ceil(max*.8);
+  $("#panel").innerHTML=`<h2>${title}</h2><div class="feedback ${ok?"ok":"ko"} pop">Score : ${score} / ${max}. ${ok?okMsg:koMsg}</div>
+  <div class="row"><button class="btn" id="nx">Mission suivante</button><button class="btn ghost" id="ag">Rejouer avec de nouvelles figures</button></div>`;
+  $("#nx").onclick=()=>goTab(next);$("#ag").onclick=again;}
+
+/* ---------- Accueil ---------- */
+RENDER[0]=function(){
+  $("#panel").innerHTML=`<h2>Bienvenue dans ta mission de révision !</h2>
+  ${coach(["Ce parcours est <b>facultatif</b> : il t’aide à préparer l’évaluation sur les angles, chez toi, à ton rythme.",
+           "Les missions sont <b>progressives</b> : commence par la 1, puis avance. Les figures changent à chaque partie : tu peux rejouer autant que tu veux.",
+           "Garde ton cours et ton cahier à côté de toi : pour les missions 6 à 8, rédige sur ton cahier, puis corrige-toi au stylo vert."])}
+  <div class="score-grid">
+    <div class="score"><div class="big">1 · 2 · 3</div><div class="lab">Le vocabulaire, reconnaître les angles alternes-internes et correspondants, et justifier pourquoi ils ne le sont pas.</div></div>
+    <div class="score"><div class="big">4 · 5</div><div class="lab">Connaître les propriétés par cœur et trouver des mesures d’angles sans justifier.</div></div>
+    <div class="score"><div class="big">6 · 7</div><div class="lab">Rédiger une démonstration en 3 étapes et s’entraîner sur des exercices comme en classe.</div></div>
+    <div class="score"><div class="big">🏆</div><div class="lab">Mode expert facultatif : des figures plus complexes, à démontrer.</div></div>
+  </div>
+  <div class="memo"><h3>Rappel : je rédige en 3 étapes</h3><ul>
+    <li><b>D’après l’énoncé, je sais que :</b> les informations utiles (droites, angles, mesures).</li>
+    <li><b>Propriété :</b> la propriété du cours, écrite en entier.</li>
+    <li><b>Conclusion :</b> ce que je démontre (une mesure ou deux droites parallèles).</li></ul></div>
+  <div class="row"><button class="btn" id="start">Commencer la mission 1</button></div>`;
+  $("#start").onclick=()=>goTab(1);};
+
+/* ---------- QCM générique ---------- */
+function qcm(cfg){ // cfg: {title, goal, key, make, max, next, okMsg, koMsg, cols}
+  if(!state[cfg.key]) state[cfg.key]={items:cfg.make(),i:0,ans:null,score:0,wrong:[]};
+  const m=state[cfg.key];
+  if(m.i>=m.items.length){saveBest(cfg.key,m.score);
+    endScreen(cfg.title,m.score,m.items.length,cfg.okMsg,cfg.koMsg,cfg.next,()=>{state[cfg.key]=null;render();});return;}
+  const it=m.items[m.i];
+  let h=`<h2>${cfg.title}</h2>${it.lvl?`<span class="lvl lvl${it.lvl}">${["","Niveau 1","Niveau 2","Niveau 3"][it.lvl]}${it.lvlName?" · "+it.lvlName:""}</span>`:""}<p class="goal">${cfg.goal}</p>
+  <div class="stage">${it.svg?`<figure>${it.svg}</figure>`:""}<div style="${it.svg?"":"grid-column:1/-1"}"><p class="count">Question ${m.i+1} sur ${m.items.length}</p>`;
+  if(it.pre) h+=`<p class="pairname">${it.pre}</p>`;
+  h+=`<p class="question">${it.q}</p><div class="choices ${it.opts.length>4||cfg.cols===1?"c1":""}">`+
+    it.opts.map((o,k)=>{let c="";if(m.ans!==null){if(k===it.ok)c="ok";else if(k===m.ans)c="ko";}
+      return `<button class="choice ${c}" data-k="${k}" ${m.ans!==null?"disabled":""}>${o}</button>`;}).join("")+`</div>`;
+  if(m.ans!==null){const ok=m.ans===it.ok;
+    h+=`<div class="feedback ${ok?"ok":"ko"} pop">${ok?"Exact ! ★ +1":"Pas tout à fait."}<div class="why">${it.why}</div></div>
+    <div class="row"><button class="btn" id="nx">${m.i+1<m.items.length?"Question suivante":"Voir mon score"}</button></div>`;}
+  $("#panel").innerHTML=h+`</div></div>`;
+  document.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{m.ans=+b.dataset.k;if(m.ans===it.ok)m.score++;else if(it.tag)m.wrong.push(it.tag);render();});
+  const n=$("#nx");if(n)n.onclick=()=>{m.i++;m.ans=null;render();};
+}
+
+/* ---------- Mission 1 · Vocabulaire ---------- */
+const V_FIG={opp:{opts:["Opposés par le sommet","Adjacents","Supplémentaires"],ok:0},
+  adjs:{opts:["Opposés par le sommet","Supplémentaires","Ni l’un ni l’autre"],ok:1},
+  adj:{opts:["Opposés par le sommet","Adjacents","Supplémentaires"],ok:1}};
+const V_FIG_KEYS=["opp","adjs","adj"];
+const V_FIG_WHY={
+  opp:"Même sommet, et les côtés de l’un sont dans le prolongement des côtés de l’autre : ils sont opposés par le sommet (donc de même mesure).",
+  adjs:"Même sommet, un côté commun, et leurs autres côtés forment une droite (un angle plat) : la somme de leurs mesures est égale à 180°, ils sont supplémentaires.",
+  adj:"Même sommet, un côté commun, et ils sont situés de part et d’autre de ce côté : ils sont adjacents. La somme de leurs mesures n’est pas égale à 180° : ils ne sont pas supplémentaires."};
+/* petits schémas pour illustrer chaque type d'angle */
+function mini(type){const f=Fig();const O={x:0,y:0};pt(f,"O",O);
+  const ray=(k,a,l=100)=>{pt(f,k,vmul(dir(a),l));line(f,["O",k],{ext:[0,8]});};
+  let cap;
+  if(type==="aigu"){ray("A",0);ray("B",50);f.arcs=[{v:"O",a:"A",b:"B",c:"q",r:30}];cap="Aigu : entre 0° et 90°";}
+  if(type==="droit"){ray("A",0);ray("B",90);f.rights=[{v:"O",a:"A",b:"B"}];cap="Droit : 90°";}
+  if(type==="obtus"){ray("A",0);ray("B",130);f.arcs=[{v:"O",a:"A",b:"B",c:"o",r:26}];cap="Obtus : entre 90° et 180°";}
+  if(type==="plat"){pt(f,"A",{x:100,y:0});pt(f,"B",{x:-100,y:0});pt(f,"C",{x:0,y:28});f.pts.C.hide=true;line(f,["B","O","A"],{ext:[8,8]});
+    f.arcs=[{v:"O",a:"A",b:"C",c:"v",r:24},{v:"O",a:"C",b:"B",c:"v",r:24}];cap="Plat : 180°";}
+  if(type==="supp"){pt(f,"A",{x:100,y:0});pt(f,"B",{x:-100,y:0});line(f,["B","O","A"],{ext:[8,8]});ray("C",60,90);
+    f.arcs=[{v:"O",a:"A",b:"C",c:"o",r:24},{v:"O",a:"C",b:"B",c:"v",r:24}];cap="Supplémentaires : adjacents, somme 180°";}
+  if(type==="adj"){ray("A",0);ray("C",45);ray("B",110);f.arcs=[{v:"O",a:"A",b:"C",c:"o",r:30},{v:"O",a:"C",b:"B",c:"v",r:30}];cap="Adjacents : même sommet, un côté commun";}
+  if(type==="opp"){pt(f,"A",vmul(dir(15),90));pt(f,"B",vmul(dir(15),-90));pt(f,"C",vmul(dir(70),90));pt(f,"D",vmul(dir(70),-90));
+    line(f,["B","O","A"],{ext:[8,8]});line(f,["D","O","C"],{ext:[8,8]});f.arcs=[{v:"O",a:"A",b:"C",c:"o",r:24},{v:"O",a:"B",b:"D",c:"v",r:24}];cap="Opposés par le sommet";}
+  Object.values(f.pts).forEach(p=>{p.name="x";p.hide=true;});
+  return `<figure class="mini">${renderFig(f,{W:200,H:120,P:16,alt:cap})}<figcaption>${cap}</figcaption></figure>`;}
+const minis=list=>`<div class="minis">${list.map(mini).join("")}</div>`;
+function vocabFig(type){
+  const f=Fig(),t=rnd(-25,25);
+  if(type==="opp"||type==="adjs"){const a=pick([rnd(38,70),rnd(110,142)]);
+    pt(f,"O",{x:0,y:0});pt(f,"P1",vmul(dir(t),-120),{tick:true});pt(f,"P2",vmul(dir(t),120),{tick:true});pt(f,"Q1",vmul(dir(t+a),-110),{tick:true});pt(f,"Q2",vmul(dir(t+a),110),{tick:true});
+    line(f,["P1","O","P2"]);line(f,["Q1","O","Q2"]);
+    const s=[{v:"O",a:"P2",b:"Q2"},{v:"O",a:"Q2",b:"P1"},{v:"O",a:"P1",b:"Q1"},{v:"O",a:"Q1",b:"P2"}];
+    const k=rnd(0,3);f.arcs=[{...s[k],c:"o"},{...s[(k+(type==="opp"?2:1))%4],c:"v"}];return nameAll(f);}
+  if(type==="adj"){const tot=pick([rnd(100,140),rnd(55,80)]),g=rnd(22,tot-22);
+    pt(f,"O",{x:0,y:0});pt(f,"X",vmul(dir(t),120),{tick:true});pt(f,"Z",vmul(dir(t+g),120),{tick:true});pt(f,"Y",vmul(dir(t+tot),120),{tick:true});
+    ["X","Z","Y"].forEach(k=>line(f,["O",k],{ext:[0,14]}));
+    f.arcs=[{v:"O",a:"X",b:"Z",c:"o",label:g+"°",r:36},{v:"O",a:"Z",b:"Y",c:"v",label:(tot-g)+"°",r:36}];return nameAll(f);}
+  const a=rnd(35,75),b=180-a,t2=rnd(-20,20);
+  pt(f,"O1",{x:-150,y:0});pt(f,"X1",vadd({x:-150,y:0},vmul(dir(t),100)),{tick:true});pt(f,"Y1",vadd({x:-150,y:0},vmul(dir(t+a),100)),{tick:true});
+  pt(f,"O2",{x:60,y:-10});pt(f,"X2",vadd({x:60,y:-10},vmul(dir(t2),95)),{tick:true});pt(f,"Y2",vadd({x:60,y:-10},vmul(dir(t2+b),95)),{tick:true});
+  [["O1","X1"],["O1","Y1"],["O2","X2"],["O2","Y2"]].forEach(p=>line(f,p,{ext:[0,14]}));
+  f.arcs=[{v:"O1",a:"X1",b:"Y1",c:"o",label:a+"°",r:30},{v:"O2",a:"X2",b:"Y2",c:"v",label:b+"°",r:26}];return nameAll(f);}
+function makeM1(){
+  const items=[];
+  const cats=shuffle([["aigu",rnd(20,80)],["droit",90],["obtus",rnd(100,170)],["plat",180]]).slice(0,2);
+  cats.forEach(([c,v])=>items.push({lvl:1,lvlName:"Je connais les mots",tag:"La nature d’un angle (aigu, droit, obtus, plat)",q:`Un angle qui mesure ${v}° est un angle :`,opts:["aigu","droit","obtus","plat"],ok:["aigu","droit","obtus","plat"].indexOf(c),
+    why:"Aigu : entre 0° et 90°. Droit : 90°. Obtus : entre 90° et 180°. Plat : 180°."+minis(["aigu","droit","obtus","plat"])}));
+  const D=[{q:"Deux angles adjacents dont la somme des mesures est égale à 180° sont :",opts:["supplémentaires","opposés par le sommet","alternes-internes"],ok:0},
+    {q:"Deux angles qui ont le même sommet, un côté commun, et qui sont situés de part et d’autre de ce côté sont :",opts:["supplémentaires","adjacents","opposés par le sommet"],ok:1},
+    {q:"Deux angles qui ont le même sommet et dont les côtés sont dans le prolongement l’un de l’autre sont :",opts:["supplémentaires","adjacents","opposés par le sommet"],ok:2}];
+  shuffle(D).slice(0,2).forEach(d=>items.push({lvl:1,lvlName:"Je connais les mots",tag:"Les définitions : supplémentaires, adjacents, opposés par le sommet",q:d.q,opts:d.opts,ok:d.ok,
+    why:"Supplémentaires : deux angles adjacents dont la somme des mesures est égale à 180°. Adjacents : même sommet, un côté commun, de part et d’autre de ce côté. Opposés par le sommet : côtés dans le prolongement l’un de l’autre."+minis(["supp","adj","opp"])}));
+  shuffle([...V_FIG_KEYS,pick(V_FIG_KEYS)]).forEach(k=>items.push({lvl:2,lvlName:"Je lis une figure",tag:"Reconnaître sur une figure des angles opposés par le sommet, adjacents ou supplémentaires",svg:renderFig(vocabFig(k)),q:"Les deux angles colorés sont :",opts:V_FIG[k].opts,ok:V_FIG[k].ok,why:V_FIG_WHY[k]+minis(["supp","adj","opp"])}));
+  return items;}
+RENDER[1]=()=>qcm({title:"Mission 1 · Le vocabulaire des angles",goal:"Choisis la bonne réponse.<br>Ce sont les notions de 6ème : elles servent tout le temps !",key:"m1",make:makeM1,next:2,
+  okMsg:"Ton vocabulaire est solide !",koMsg:"Relis la page de vocabulaire de ton cours, puis rejoue."});
+
+/* ---------- Mission 2 · Je reconnais ---------- */
+const M2_OPTS=["Alternes-internes","Correspondants","Opposés par le sommet","Supplémentaires","Aucun de ces cas"],M2_KEYS=["ai","corr","opp","adj","none"];
+const LVLN={1:"Figure simple, angles colorés",2:"Je lis le nom des angles",3:"Figure complexe"};
+const M2TAG={ai:"Reconnaître des angles alternes-internes",corr:"Reconnaître des angles correspondants",opp:"Reconnaître des angles opposés par le sommet",adj:"Reconnaître des angles supplémentaires",none:"Repérer quand les angles ne sont ni alternes-internes, ni correspondants"};
+function m2Item(level,type){
+  for(let n=0;n<40;n++){
+    const f=level===1?makeF1():level===2?pick([makeF1,makeF4])():pick([makeF2,makeF3,makeF4])();prep(f);
+    const c=pairsOf(f,type);if(!c.length)continue;
+    const [X,Y,k]=pick(c);
+    f.arcs=level<3?[{...X,c:"o"},{...Y,c:"v"}]:[];
+    const fc=corrFig(f,X,Y,k);
+    return {lvl:level,lvlName:LVLN[level],tag:M2TAG[type]+(level===3?" (figures complexes)":""),svg:renderFig(f),pre:level>1?`Les angles ${ang(aName(f,X))} et ${ang(aName(f,Y))}`:"",
+      q:level===1?"Les deux angles colorés sont :":"Ces deux angles sont :",opts:M2_OPTS,ok:M2_KEYS.indexOf(type),why:`<div class="corrfig"><figure>${fc}</figure><div>${explain(f,k,X,Y)}</div></div>`};}
+  return m2Item(level,"corr");}
+function makeM2(){const plan=[];
+  shuffle(["ai","corr","opp"]).forEach(t=>plan.push([1,t]));
+  shuffle(["ai","corr","none"]).forEach(t=>plan.push([2,t]));
+  shuffle(["ai","corr",pick(["none","adj","opp"])]).forEach(t=>plan.push([3,t]));
+  return plan.map(([l,t])=>m2Item(l,t));}
+RENDER[2]=()=>qcm({title:"Mission 2 · Je reconnais les angles",goal:"Observe la position des angles par rapport à la sécante et aux deux droites, puis choisis.",key:"m2",make:makeM2,next:3,
+  okMsg:"Tu reconnais très bien les angles, même dans les figures complexes !",koMsg:"Repère d’abord la sécante (la droite qui passe par les deux sommets), puis rejoue."});
+
+/* ---------- Mission 3 · Je justifie ---------- */
+function m3Item(level,claim,sameV){
+  for(let n=0;n<60;n++){
+    const f=level===1?makeF1():pick([makeF2,makeF3,makeF4])();prep(f);
+    const c=sameV?pairsOf(f,null,k=>k.same&&(k.t==="adj"||k.t==="opp")):pairsOf(f,null,k=>!k.same&&k.t!==claim&&!k.nosec);
+    if(!c.length)continue;
+    const [X,Y,k]=pick(c);const r=reasonsOf(k)[claim];
+    const ids=Object.keys(R_TXT[claim]);if(ids.every(i=>r[i]))continue;
+    f.arcs=[{...X,c:"o"},{...Y,c:"v"}];
+    return {lvl:level,svg:renderFig(f),X:aName(f,X),Y:aName(f,Y),claim,opts:shuffle(ids).map(id=>({id,txt:R_TXT[claim][id],ok:r[id]})),why:`<div class="corrfig"><figure>${corrFig(f,X,Y,k)}</figure><div>${explain(f,k,X,Y)}</div></div>`};}
+  return m3Item(level,claim,false);}
+function makeM3(){const c=pick(["ai","corr"]),d=pick(["ai","corr"]);
+  return [m3Item(1,"ai"),m3Item(1,"corr"),m3Item(1,c),m3Item(2,"ai"),m3Item(2,"corr"),m3Item(2,d)];}
+RENDER[3]=function(){
+  if(!state.m3)state.m3={items:makeM3(),i:0,sel:[],done:false,score:0,wrong:[]};const m=state.m3;
+  const T="Mission 3 · Je justifie avec la définition";
+  if(m.i>=m.items.length){saveBest("m3",m.score);endScreen(T,m.score,m.items.length,"Tu sais justifier avec la définition !","Relis les définitions des angles alternes-internes et correspondants dans ton cours, puis rejoue.",4,()=>{state.m3=null;render();});return;}
+  const it=m.items[m.i];
+  const chosen=it.opts.filter((o,k)=>m.sel[k]).map(o=>o.txt);
+  let h=`<h2>${T}</h2><span class="lvl lvl${it.lvl===1?1:3}">${it.lvl===1?"Niveau 1 · Figure simple":"Niveau 2 · Figure complexe"}</span>
+  <p class="goal">Comme en classe, complète la phrase avec la ou les raisons qui viennent de la <b>définition</b>.</p>
+  <p class="multi">⚠️ Il peut y avoir <b>plusieurs bonnes réponses</b> : coche toutes les raisons justes. S’il en manque une, ou si une raison cochée est fausse, la réponse n’est pas comptée juste.</p>
+  <div class="stage"><figure>${it.svg}</figure><div><p class="count">Phrase ${m.i+1} sur ${m.items.length}</p>
+  <p class="phrase">« Les angles ${ang(it.X)} et ${ang(it.Y)} ne sont pas ${TT[it.claim]} car <span class="gap">${chosen.length?chosen.join(" et "):"…"}</span>. »</p>
+  <div class="opts" role="group">`+it.opts.map((o,k)=>{let c="";if(m.done){if(o.ok)c="good";else if(m.sel[k])c="bad";}
+    return `<button class="opt ${c}" role="checkbox" aria-checked="${!!m.sel[k]}" data-k="${k}" ${m.done?"disabled":""}><span class="dot box"></span><span>car ${o.txt}</span></button>`;}).join("")+`</div>`;
+  if(!m.done) h+=`<div class="row"><button class="btn" id="m3ok" ${chosen.length?"":"disabled"}>Valider</button></div>`;
+  else{const ok=it.opts.every((o,k)=>!!m.sel[k]===o.ok);const good=it.opts.filter(o=>o.ok).map(o=>o.txt);
+    const missed=it.opts.some((o,k)=>o.ok&&!m.sel[k]),extra=it.opts.some((o,k)=>!o.ok&&m.sel[k]);
+    h+=`<div class="feedback ${ok?"ok":"ko"} pop">${ok?"Bien justifié ! ★ +1":extra?"Une des raisons cochées est fausse sur cette figure.":"Il manque une raison : il fallait toutes les cocher."}
+      <div class="why">${good.length>1?`Il y avait ${good.length} bonnes raisons : `:"La bonne raison : "}${good.join(" ; ")}.<br>${it.why}</div></div>
+      <div class="row"><button class="btn" id="nx">${m.i+1<m.items.length?"Phrase suivante":"Voir mon score"}</button></div>`;}
+  $("#panel").innerHTML=h+`</div></div>`;
+  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{const k=+b.dataset.k;m.sel[k]=!m.sel[k];render();});
+  const v=$("#m3ok");if(v)v.onclick=()=>{m.done=true;const ok=it.opts.every((o,k)=>!!m.sel[k]===o.ok);
+    if(ok)m.score++;else m.wrong.push(`Justifier pourquoi des angles ne sont pas ${TT[it.claim]}`);render();};
+  const n=$("#nx");if(n)n.onclick=()=>{m.i++;m.sel=[];m.done=false;render();};};
+
+/* ---------- Mission 4 · Mon cours par cœur ---------- */
+const M4=[
+ {t:"Les définitions",goal:"Deux droites sont coupées par une sécante. Complète les définitions.",
+  sent:[{tag:"Angles alternes-internes",parts:["Deux angles sont alternes-internes si :<br>• ils sont situés ",0," de la sécante,<br>• ils sont situés ",1," les deux droites,<br>• s’ils n’ont pas le même ",2,"."]},
+        {tag:"Angles correspondants",parts:["Deux angles sont correspondants si :<br>• ils sont situés ",3," de la sécante,<br>• ",4," angle est situé entre les deux droites,<br>• s’ils n’ont pas le même ",5,"."]}],
+  ans:["de part et d’autre","entre","sommet","du même côté","un seul","sommet"],
+  extra:["à l’extérieur de","les deux","côté"]},
+ {t:"Angles et parallélisme",goal:"Complète les propriétés : la propriété, sa réciproque et les cas particuliers.",
+  sent:[{tag:"Propriété",parts:["SI deux droites coupées par une sécante sont ",0,", ALORS les angles alternes-internes ou correspondants qu’elles forment sont ",1,"."]},
+        {tag:"Propriété réciproque",parts:["SI deux droites coupées par une sécante forment deux angles alternes-internes ou correspondants ",2,", ALORS ces droites sont ",3,"."]},
+        {tag:"Cas particulier",parts:["SI deux droites sont ",4," à une même droite, ALORS elles sont ",5," entre elles."]},
+        {tag:"Cas particulier",parts:["SI deux droites sont parallèles, ALORS toute droite perpendiculaire à l’une est ",6," à l’autre."]}],
+  ans:["parallèles","de même mesure","de même mesure","parallèles","perpendiculaires","parallèles","perpendiculaire"],
+  extra:["sécantes","supplémentaires","opposés"]},
+ {t:"Les angles dans un triangle",goal:"Complète les propriétés des angles dans un triangle.",
+  sent:[{tag:"Dans un triangle",parts:["Dans un triangle, la somme des mesures des angles est égale à ",0,"."]},
+        {tag:"Triangle isocèle",parts:["Dans un triangle isocèle, les deux angles ",1," ont ",2,"."]},
+        {tag:"Triangle rectangle",parts:["Dans un triangle rectangle, la somme des deux angles ",3," est égale à ",4,"."]},
+        {tag:"Triangle équilatéral",parts:["Dans un triangle équilatéral, chaque angle mesure ",5,"."]}],
+  ans:["180°","à la base","la même mesure","aigus","90°","60°"],
+  extra:["360°","au sommet","obtus","45°"]}];
+function newM4(){return {c:0,cards:M4.map(k=>({fill:Array(k.ans.length).fill(null),sel:0,words:shuffle([...k.ans,...k.extra]),checked:false,score:0}))};}
+RENDER[4]=function(){
+  if(!state.m4)state.m4=newM4();const m=state.m4;
+  const K=M4[m.c],C=m.cards[m.c];
+  let h=`<h2>Mission 4 · Je connais mon cours par cœur</h2><div class="cardnav">${M4.map((k,i)=>`<span class="${i===m.c?"on":m.cards[i].checked&&m.cards[i].score===k.ans.length?"done":""}">${i+1}. ${k.t}</span>`).join("")}</div>
+  <p class="goal">${K.goal} Ferme ton cours ! Touche un trou, puis l’étiquette qui convient. Touche un trou rempli pour le vider.</p>`;
+  K.sent.forEach(s=>{h+=`<p class="prop"><span class="tag">${s.tag} :</span>`+s.parts.map(p=>{
+    if(typeof p==="string")return p;
+    const c=C.checked?(C.words[C.fill[p]]===K.ans[p]?"ok":"ko"):(C.sel===p?"sel":"");
+    return `<button class="blank ${c}" data-b="${p}" aria-label="trou ${p+1}">${C.fill[p]!==null?C.words[C.fill[p]]:"…"}</button>`;}).join("")+`</p>`;});
+  h+=`<div class="bank">`+C.words.map((w,i)=>`<button class="tile" data-w="${i}" ${C.fill.includes(i)||C.checked?"disabled":""}>${w}</button>`).join("")+`</div>
+  <div class="row"><button class="btn" id="ck" ${C.fill.includes(null)||C.checked?"disabled":""}>Vérifier</button><button class="btn ghost" id="rs">Recommencer cette carte</button></div>`;
+  if(C.checked){const ok=C.score===K.ans.length;
+    h+=`<div class="feedback ${ok?"ok":"ko"} pop">${ok?`Parfait, tu connais ces propriétés par cœur ! ★ +${C.score}`:`${C.score} réponse${C.score>1?"s":""} juste${C.score>1?"s":""} sur ${K.ans.length}. Les trous en rouge sont à revoir : relis ton cours, puis recommence la carte.`}</div>`;
+    h+=`<div class="row">${m.c<M4.length-1?`<button class="btn" id="nc">Carte suivante</button>`:`<button class="btn" id="nx">Mission suivante</button>`}</div>`;}
+  $("#panel").innerHTML=h;
+  const re=()=>{render();};
+  document.querySelectorAll(".blank").forEach(b=>b.onclick=()=>{if(C.checked)return;const i=+b.dataset.b;if(C.fill[i]!==null)C.fill[i]=null;C.sel=i;re();});
+  document.querySelectorAll(".tile").forEach(t=>t.onclick=()=>{let i=C.sel;if(i===null||C.fill[i]!==null)i=C.fill.indexOf(null);if(i<0)return;
+    C.fill[i]=+t.dataset.w;const nx=C.fill.indexOf(null);C.sel=nx<0?null:nx;re();});
+  $("#ck").onclick=()=>{C.checked=true;C.score=C.fill.filter((w,i)=>C.words[w]===K.ans[i]).length;saveBest("m4",m4score());re();};
+  $("#rs").onclick=()=>{m.cards[m.c]={fill:Array(K.ans.length).fill(null),sel:0,words:shuffle([...K.ans,...K.extra]),checked:false,score:0};re();};
+  const nc=$("#nc");if(nc)nc.onclick=()=>{m.c++;re();window.scrollTo({top:0});};
+  const nx=$("#nx");if(nx)nx.onclick=()=>goTab(5);};
+
+/* ---------- Mission 5 · Je calcule sans justifier ---------- */
+function triFig(angles,names){ // angles aux sommets 0,1,2 ; renvoie f avec T0,T1,T2
+  const f=Fig();const [a0,a1,a2]=angles;const t=Math.sin(rad(a2))/Math.sin(rad(a0));
+  pt(f,"T1",{x:0,y:0});pt(f,"T2",{x:200,y:0});pt(f,"T0",vmul(dir(a1),200*t));
+  line(f,["T0","T1"],{ext:[0,0]});line(f,["T1","T2"],{ext:[0,0]});line(f,["T2","T0"],{ext:[0,0]});
+  if(names)names.forEach((n,i)=>f.pts["T"+i].name=n);
+  return f;}
+const TA=[{v:"T0",a:"T1",b:"T2"},{v:"T1",a:"T2",b:"T0"},{v:"T2",a:"T0",b:"T1"}];
+function F1par(){const phi=pick([rnd(55,72),rnd(108,125)]),psi=rnd(-10,10);const f=makeF1({phi,psi1:psi,psi2:psi,lab:true,col:true});prep(f);return f;}
+const M5G={
+ opp(){const f=Fig(),t=rnd(-20,20),a=pick([rnd(35,75),rnd(105,145)]);
+   pt(f,"O",{x:0,y:0});pt(f,"P1",vmul(dir(t),-120),{tick:true});pt(f,"P2",vmul(dir(t),120),{tick:true});pt(f,"Q1",vmul(dir(t+a),-115),{tick:true});pt(f,"Q2",vmul(dir(t+a),115),{tick:true});
+   line(f,["P1","O","P2"]);line(f,["Q1","O","Q2"]);nameAll(f);
+   const X={v:"O",a:"P2",b:"Q2"},Y={v:"O",a:"P1",b:"Q1"};f.arcs=[{...X,c:"p",label:a+"°"},{...Y,c:"q",label:"?"}];
+   return {svg:renderFig(f),q:`Les droites (${N(f,"P1")}${N(f,"P2")}) et (${N(f,"Q1")}${N(f,"Q2")}) sont sécantes en ${N(f,"O")}. Quelle est la mesure de l’angle ${ang(aName(f,Y))} ?`,ans:a,
+     why:`Les angles ${ang(aName(f,X))} et ${ang(aName(f,Y))} sont opposés par le sommet : ils ont la même mesure, ${a}°.`};},
+ supp(){const f=Fig(),t=rnd(-15,15),b=pick([rnd(30,75),rnd(105,150)]);
+   pt(f,"B",{x:0,y:0});pt(f,"A",vmul(dir(t),-130),{tick:true});pt(f,"C",vmul(dir(t),130),{tick:true});pt(f,"D",vmul(dir(t+b),115),{tick:true});
+   line(f,["A","B","C"]);line(f,["B","D"],{ext:[0,14]});prep(f);
+   const X={v:"B",a:"C",b:"D"},Y={v:"B",a:"D",b:"A"};f.arcs=[{...X,c:"p",label:b+"°"},{...Y,c:"q",label:"?"}];
+   return {svg:renderFig(f),q:`Les points ${N(f,"A")}, ${N(f,"B")} et ${N(f,"C")} sont alignés. Quelle est la mesure de l’angle ${ang(aName(f,Y))} ?`,ans:180-b,
+     why:`${ang(N(f,"A")+N(f,"B")+N(f,"C"))} est un angle plat (180°). Donc ${ang(aName(f,Y))} = 180 − ${b} = ${180-b}°.`};},
+ compl(){const f=Fig(),t=rnd(-20,20),g=rnd(22,68);
+   pt(f,"N",{x:0,y:0});pt(f,"R",vmul(dir(t),125),{tick:true});pt(f,"M",vmul(dir(t+90),125),{tick:true});pt(f,"P",vmul(dir(t+g),125),{tick:true});
+   ["R","M","P"].forEach(k=>line(f,["N",k],{ext:[0,14]}));nameAll(f);
+   const X={v:"N",a:"P",b:"M"},Y={v:"N",a:"R",b:"P"};f.rights=[{v:"N",a:"R",b:"M"}];f.arcs=[{...X,c:"p",label:(90-g)+"°",r:38},{...Y,c:"q",label:"?",r:38}];
+   const MR=N(f,"M")+N(f,"N")+N(f,"R");
+   return {svg:renderFig(f),q:`L’angle ${ang(MR)} est droit. Quelle est la mesure de l’angle ${ang(aName(f,Y))} ?`,ans:g,
+     why:`${ang(MR)} = 90°. Donc ${ang(aName(f,Y))} = 90 − ${90-g} = ${g}°.`};},
+ bis(){const f=Fig(),t=rnd(-15,15),d=rnd(18,40);
+   pt(f,"F",{x:0,y:0});pt(f,"G",vmul(dir(t),130),{tick:true});pt(f,"E",vmul(dir(t+2*d),130),{tick:true});pt(f,"K",vmul(dir(t+d),140));f.pts.K.hide=true;
+   line(f,["F","G"],{ext:[0,14]});line(f,["F","E"],{ext:[0,14]});line(f,["F","K"],{ext:[0,6],lab:"(d)",col:"var(--red)"});nameAll(f);
+   const EFG=N(f,"E")+N(f,"F")+N(f,"G");f.arcs=[{v:"F",a:"K",b:"E",c:"p",label:d+"°",r:40},{v:"F",a:"G",b:"K",c:"a",r:40}];
+   return {svg:renderFig(f),q:`La droite (d) est la bissectrice de l’angle ${ang(EFG)}. Quelle est la mesure de l’angle ${ang(EFG)} ?`,ans:2*d,
+     why:`La bissectrice partage l’angle en deux angles de même mesure : ${ang(EFG)} = 2 × ${d} = ${2*d}°.`};},
+ ai(){const f=F1par();const [qa,qb]=pick([[2,0],[3,1]]);let X=f.sec.A[qa],Y=f.sec.B[qb],m=f.meas.A(qa);if(Math.random()<.5)[X,Y]=[Y,X];
+   f.arcs=[{...X,c:"p",label:m+"°"},{...Y,c:"q",label:"?"}];
+   return {svg:renderFig(f),q:`Les droites (d) et (d′) sont parallèles. Quelle est la mesure de l’angle ${ang(aName(f,Y))} ?`,ans:m,
+     why:`${ang(aName(f,X))} et ${ang(aName(f,Y))} sont alternes-internes et (d) // (d′) : ils ont la même mesure, ${m}°.`};},
+ corr(){const f=F1par();const q=rnd(0,3);let X=f.sec.A[q],Y=f.sec.B[q],m=f.meas.A(q);if(Math.random()<.5)[X,Y]=[Y,X];
+   f.arcs=[{...X,c:"p",label:m+"°"},{...Y,c:"q",label:"?"}];
+   return {svg:renderFig(f),q:`Les droites (d) et (d′) sont parallèles. Quelle est la mesure de l’angle ${ang(aName(f,Y))} ?`,ans:m,
+     why:`${ang(aName(f,X))} et ${ang(aName(f,Y))} sont correspondants et (d) // (d′) : ils ont la même mesure, ${m}°.`};},
+ supcorr(){const f=F1par();const q=rnd(0,3),q2=(q+1)%4;const X=f.sec.A[q],Y=f.sec.B[q2],Z=f.sec.B[q],m=f.meas.A(q);
+   f.arcs=[{...X,c:"p",label:m+"°"},{...Y,c:"q",label:"?"}];
+   return {svg:renderFig(f),q:`Les droites (d) et (d′) sont parallèles. Quelle est la mesure de l’angle ${ang(aName(f,Y))} ?`,ans:180-m,
+     why:`${ang(aName(f,Z))} et ${ang(aName(f,X))} sont correspondants, donc ${ang(aName(f,Z))} = ${m}°. Puis ${ang(aName(f,Y))} et ${ang(aName(f,Z))} forment un angle plat : ${ang(aName(f,Y))} = 180 − ${m} = ${180-m}°.`};},
+ tri(){const a=rnd(30,80),b=rnd(30,140-a),c=180-a-b;const f=triFig(shuffle([[a,"a"],[b,"b"],[c,"c"]]).map(x=>x[0]));
+   rotate(f,rnd(-15,15));prep(f);const ms=[0,1,2].map(i=>Math.round(f.__m?0:0));
+   // mesures réelles aux sommets
+   const real=TA.map(X=>{const v=f.pts[X.v],u=vsub(f.pts[X.a],v),w=vsub(f.pts[X.b],v);return Math.round(Math.acos((u.x*w.x+u.y*w.y)/(vlen(u)*vlen(w)))*180/Math.PI);});
+   const k=rnd(0,2);const giv=[0,1,2].filter(i=>i!==k);
+   f.arcs=[{...TA[giv[0]],c:"p",label:real[giv[0]]+"°"},{...TA[giv[1]],c:"b",label:real[giv[1]]+"°"},{...TA[k],c:"q",label:"?"}];
+   const ans=180-real[giv[0]]-real[giv[1]];const T=N(f,"T0")+N(f,"T1")+N(f,"T2");
+   return {svg:renderFig(f),q:`Quelle est la mesure de l’angle ${ang(aName(f,TA[k]))} du triangle ${T} ?`,ans,
+     why:`Dans un triangle, la somme des mesures des angles est égale à 180° : 180 − (${real[giv[0]]} + ${real[giv[1]]}) = ${ans}°.`};},
+ part(){const ty=pick(["iso","iso2","rect","equi"]);
+   if(ty==="equi"){const f=triFig([60,60,60]);rotate(f,rnd(-20,20));prep(f);f.marks=[["T0","T1",2],["T1","T2",2],["T2","T0",2]];const k=rnd(0,2);f.arcs=[{...TA[k],c:"q",label:"?"}];
+     return {svg:renderFig(f),q:`Quelle est la mesure de l’angle ${ang(aName(f,TA[k]))} ?`,ans:60,why:"Le codage indique un triangle équilatéral : chaque angle mesure 60°."};}
+   if(ty==="rect"){const a=rnd(22,68);const f=triFig([90,a,90-a]);rotate(f,rnd(-20,20));prep(f);f.rights=[{v:"T0",a:"T1",b:"T2"}];f.arcs=[{...TA[1],c:"p",label:a+"°"},{...TA[2],c:"q",label:"?"}];
+     return {svg:renderFig(f),q:`Quelle est la mesure de l’angle ${ang(aName(f,TA[2]))} ?`,ans:90-a,why:`Le triangle est rectangle : la somme des deux angles aigus est égale à 90°. 90 − ${a} = ${90-a}°.`};}
+   const b=rnd(28,75),x=180-2*b;const f=triFig([x,b,b]);rotate(f,rnd(-15,15));prep(f);f.marks=[["T0","T1",1],["T0","T2",1]];
+   if(ty==="iso"){f.arcs=[{...TA[1],c:"p",label:b+"°"},{...TA[0],c:"q",label:"?"}];
+     return {svg:renderFig(f),q:`Quelle est la mesure de l’angle ${ang(aName(f,TA[0]))} ?`,ans:x,why:`Triangle isocèle : les angles à la base mesurent tous les deux ${b}°. Donc 180 − (${b} + ${b}) = ${x}°.`};}
+   f.arcs=[{...TA[0],c:"p",label:x+"°"},{...TA[2],c:"q",label:"?"}];
+   return {svg:renderFig(f),q:`Quelle est la mesure de l’angle ${ang(aName(f,TA[2]))} ?`,ans:b,why:`Triangle isocèle : les deux angles à la base ont la même mesure. (180 − ${x}) ÷ 2 = ${b}°.`};},
+ align(){const f=Fig();const three=Math.random()<.5;const yes=Math.random()<.5;const err=yes?0:pick([-1,1]);
+   let a1,a2,a3;if(three){a1=rnd(25,60);a3=90-a1+err;a2=90;}else{a1=rnd(110,155);a2=180-a1+err;}
+   const tot=three?a1+90+a3:a1+a2;
+   pt(f,"V",{x:0,y:0});pt(f,"D",vmul(dir(180),130),{tick:true});pt(f,"A",vmul(dir(180-a1),120),{tick:true});
+   if(three)pt(f,"P",vmul(dir(180-a1-90),120),{tick:true});
+   pt(f,"B",vmul(dir(180-tot),130),{tick:true});
+   (three?["D","A","P","B"]:["D","A","B"]).forEach(k=>line(f,["V",k],{ext:[0,14]}));
+   rotate(f,rnd(-12,12));nameAll(f);
+   if(three){f.arcs=[{v:"V",a:"A",b:"D",c:"b",label:a1+"°",r:34},{v:"V",a:"B",b:"P",c:"p",label:a3+"°",r:34}];f.rights=[{v:"V",a:"P",b:"A"}];}
+   else f.arcs=[{v:"V",a:"A",b:"D",c:"q",label:a1+"°",r:30},{v:"V",a:"B",b:"A",c:"o",label:a2+"°",r:34}];
+   const DVB=[N(f,"D"),N(f,"V"),N(f,"B")];
+   return {yn:true,svg:renderFig(f),q:`Les points ${DVB.join(", ")} sont-ils alignés ?`,ans:yes?"oui":"non",
+     why:`${three?`${a1} + 90 + ${a3}`:`${a1} + ${a2}`} = ${tot}°. ${yes?`L’angle ${ang(DVB.join(""))} est plat : les points sont alignés.`:`${tot}° n’est pas 180° : l’angle n’est pas plat, les points ne sont pas alignés (même si le dessin trompe !).`}`};},
+ zig(){const f=Fig();const a=rnd(35,65),b=rnd(22,45);
+   const K={x:0,y:0},J=vmul({x:Math.cos(rad(a)),y:Math.sin(rad(a))},110),M={x:Math.cos(rad(b))*150,y:-Math.sin(rad(b))*150};
+   pt(f,"K",K);pt(f,"J",J);pt(f,"M",M);
+   pt(f,"I",{x:J.x-170,y:J.y},{tick:true});pt(f,"J2",{x:J.x+110,y:J.y},{tick:true});
+   pt(f,"K1",{x:-120,y:0},{tick:true});pt(f,"H",{x:150,y:0},{tick:true});
+   pt(f,"L",{x:M.x-190,y:M.y},{tick:true});pt(f,"M2",{x:M.x+60,y:M.y},{tick:true});
+   line(f,["I","J","J2"]);line(f,["K1","K","H"]);line(f,["L","M","M2"]);line(f,["J","K"],{ext:[0,0]});line(f,["K","M"],{ext:[0,0]});
+   f.pts.J2.hide=true;f.pts.K1.hide=true;f.pts.M2.hide=true;nameAll(f);
+   f.arcs=[{v:"J",a:"I",b:"K",c:"q",label:a+"°"},{v:"M",a:"K",b:"L",c:"v",label:b+"°"},{v:"K",a:"J",b:"M",c:"o",label:"?",r:30}];
+   const IJ="("+N(f,"I")+N(f,"J")+")",KH="("+N(f,"K")+N(f,"H")+")",LM="("+N(f,"L")+N(f,"M")+")";
+   const q=aName(f,{v:"K",a:"J",b:"M"});
+   return {svg:renderFig(f),q:`Les droites ${IJ}, ${KH} et ${LM} sont parallèles. Quelle est la mesure de l’angle ${ang(q)} ?`,ans:a+b,
+     why:`${ang(N(f,"J")+N(f,"K")+N(f,"H"))} et ${ang(N(f,"I")+N(f,"J")+N(f,"K"))} sont alternes-internes : ${a}°. ${ang(N(f,"H")+N(f,"K")+N(f,"M"))} et ${ang(N(f,"K")+N(f,"M")+N(f,"L"))} sont alternes-internes : ${b}°. Donc ${ang(q)} = ${a} + ${b} = ${a+b}°.`};},
+ butterfly(){const f=Fig();const a=rnd(45,70),b=rnd(40,65),th=180-a-b,c=rnd(Math.max(30,a+b-100),a+b-25),e=180-th-c;
+   const u=dir(rnd(160,175)),w=dir(Math.atan2(u.y,u.x)*180/Math.PI+th);
+   const k1=150,k2=130;
+   pt(f,"O",{x:0,y:0});pt(f,"A",vmul(u,k1*Math.sin(rad(b))));pt(f,"B",vmul(w,k1*Math.sin(rad(a))));
+   pt(f,"D",vmul(u,-k2*Math.sin(rad(e))));pt(f,"C",vmul(w,-k2*Math.sin(rad(c))));
+   line(f,["A","O","D"],{ext:[0,0]});line(f,["B","O","C"],{ext:[0,0]});line(f,["A","B"],{ext:[0,0]});line(f,["C","D"],{ext:[0,0]});prep(f);
+   f.arcs=[{v:"A",a:"O",b:"B",c:"p",label:a+"°"},{v:"B",a:"A",b:"O",c:"b",label:b+"°"},{v:"D",a:"C",b:"O",c:"v",label:c+"°"},{v:"C",a:"O",b:"D",c:"q",label:"?"}];
+   const q=aName(f,{v:"C",a:"O",b:"D"}),AOB=N(f,"A")+N(f,"O")+N(f,"B"),COD=N(f,"C")+N(f,"O")+N(f,"D");
+   return {svg:renderFig(f),q:`Les points ${N(f,"A")}, ${N(f,"O")}, ${N(f,"D")} sont alignés, ainsi que ${N(f,"B")}, ${N(f,"O")}, ${N(f,"C")}. Quelle est la mesure de l’angle ${ang(q)} ?`,ans:e,
+     why:`${ang(AOB)} = 180 − (${a} + ${b}) = ${th}°. ${ang(COD)} lui est opposé par le sommet : ${th}°. Donc ${ang(q)} = 180 − (${th} + ${c}) = ${e}°.`};}
+};
+function makeM5(){const plan=[[1,"opp"],[1,"supp"],[1,"compl"],[1,"bis"],[2,"ai"],[2,"corr"],[2,"supcorr"],[2,"tri"],[2,"part"],[3,"align"],[3,"zig"],[3,"butterfly"]];
+  return plan.map(([l,k])=>({lvl:l,tag:M5TAG[k],...M5G[k]()}));}
+const M5TAG={opp:"Mesure d’angles opposés par le sommet",supp:"Utiliser un angle plat (points alignés)",compl:"Utiliser un angle droit partagé en deux",bis:"Utiliser la bissectrice d’un angle",
+  ai:"Angles alternes-internes et droites parallèles",corr:"Angles correspondants et droites parallèles",supcorr:"Enchaîner angles correspondants et angle plat",tri:"Somme des angles d’un triangle",
+  part:"Angles des triangles particuliers (isocèle, rectangle, équilatéral)",align:"Reconnaître si des points sont alignés (angle plat = 180°)",zig:"Configuration à trois droites parallèles",butterfly:"Configuration « papillon » (plusieurs étapes)"};
+RENDER[5]=function(){
+  if(!state.m5)state.m5={items:makeM5(),i:0,val:"",done:false,ok:false,score:0,wrong:[]};const m=state.m5;
+  const T="Mission 5 · Je trouve la mesure (sans justifier)";
+  if(m.i>=m.items.length){saveBest("m5",m.score);endScreen(T,m.score,m.items.length,"Tu trouves les mesures très rapidement !","Relis les explications des erreurs, puis rejoue : les figures changent.",6,()=>{state.m5=null;render();});return;}
+  const it=m.items[m.i];
+  const LN=["","Niveau 1 · Angles de 6ème","Niveau 2 · Parallèles et triangles","Niveau 3 · Configurations complexes"];
+  let h=`<h2>${T}</h2><span class="lvl lvl${it.lvl}">${LN[it.lvl]}</span><p class="goal">Lis l’énoncé et le codage, puis donne la réponse. Pas besoin de rédiger ici.</p>
+  <div class="stage"><figure>${it.svg}</figure><div><p class="count">Question ${m.i+1} sur ${m.items.length}</p><p class="question">${it.q}</p>`;
+  if(it.yn) h+=`<div class="yn">${["oui","non"].map(v=>`<button class="choice ${m.done?(v===it.ans?"ok":v===m.val?"ko":""):""}" data-v="${v}" ${m.done?"disabled":""}>${v==="oui"?"Oui":"Non"}</button>`).join("")}</div>`;
+  else h+=`<div class="numrow"><label for="m5in">Mesure :</label><input class="fill num ${m.done?(m.ok?"good":"bad"):""}" id="m5in" inputmode="decimal" autocomplete="off" value="${m.val}" ${m.done?"disabled":""}> °
+    ${m.done?"":`<button class="btn" id="m5ok">Valider</button>`}</div>`;
+  if(m.warn&&!m.done) h+=`<div class="feedback ko pop">Écris un nombre avant de valider.</div>`;
+  if(m.done) h+=`<div class="feedback ${m.ok?"ok":"ko"} pop">${m.ok?"Exact ! ★ +1":`Non : la réponse est ${it.yn?(it.ans==="oui"?"oui":"non"):it.ans+"°"}.`}<div class="why">${it.why}</div></div>
+    <div class="row"><button class="btn" id="nx">${m.i+1<m.items.length?"Question suivante":"Voir mon score"}</button></div>`;
+  $("#panel").innerHTML=h+`</div></div>`;
+  const inp=$("#m5in");
+  const val=v=>{m.val=v;m.done=true;m.warn=false;m.ok=it.yn?v===it.ans:Number(String(v).replace(",","."))===it.ans;if(m.ok)m.score++;else m.wrong.push(it.tag);render();};
+  if(inp){inp.oninput=()=>m.val=inp.value;inp.onkeydown=e=>{if(e.key==="Enter")$("#m5ok")&&$("#m5ok").click();};if(!m.done)inp.focus({preventScroll:true});}
+  const ok=$("#m5ok");if(ok)ok.onclick=()=>{if(!String(m.val).trim()){m.warn=true;render();return;}val(m.val.trim());};
+  document.querySelectorAll(".yn .choice").forEach(b=>b.onclick=()=>val(b.dataset.v));
+  const n=$("#nx");if(n)n.onclick=()=>{m.i++;m.val="";m.done=false;m.ok=false;render();};};
+
+/* ---------- Mission 6 · Je démontre (guidage dégressif) ---------- */
+const PR={
+  PAR:"SI deux droites coupées par une sécante sont parallèles, ALORS les angles alternes-internes ou correspondants qu’elles forment sont de même mesure.",
+  REC:"SI deux droites coupées par une sécante forment deux angles alternes-internes ou correspondants de même mesure, ALORS ces droites sont parallèles.",
+  PERP:"SI deux droites sont perpendiculaires à une même droite, ALORS elles sont parallèles entre elles.",
+  PERP2:"SI deux droites sont parallèles, ALORS toute droite perpendiculaire à l’une est perpendiculaire à l’autre.",
+  TRI:"Dans un triangle, la somme des mesures des angles est égale à 180°."};
+const ALT={"parallèles":["paralleles","parallele"],"de même mesure":["meme mesure","la meme mesure","egaux","egales","de la meme mesure"],
+  "alternes-internes":["alternes internes","alterne interne","alternes interne"],"correspondants":["correspondant"],"perpendiculaires":["perpendiculaire"],"somme":["la somme"]};
+const P_=(o,ok)=>{const sh=shuffle(o);return {k:"pick",opts:sh,ok:sh.indexOf(o[ok])};};
+const T_=w=>({k:"text",acc:[w].concat(ALT[w]||[])});
+const NUM=(v,g)=>({k:"num",v,g});
+const ANG=(v,g,al)=>({k:"angle",v,g,al:al||[v]});
+const PAR_=t=>`SI deux droites coupées par une sécante sont parallèles, ALORS les angles ${TT[t]} qu’elles forment sont de même mesure.`;
+const REC_=t=>`SI deux droites coupées par une sécante forment deux angles ${TT[t]} de même mesure, ALORS ces droites sont parallèles.`;
+// tous les noms possibles d'un angle (points situés sur chaque côté)
+function aliases(f,X){const side=(t)=>{const L=f.lines.find(L=>L.ids.includes(X.v)&&L.ids.includes(t));const ids=L.ids,i=ids.indexOf(X.v),sg=Math.sign(ids.indexOf(t)-i);
+    return ids.filter((k,j)=>Math.sign(j-i)===sg).map(k=>N(f,k));};
+  const A=side(X.a),B=side(X.b),out=[];A.forEach(a=>B.forEach(b=>out.push(a+N(f,X.v)+b)));return out;}
+const PT=t=>P_(["alternes-internes","correspondants","opposés par le sommet"],t==="ai"?0:1);
+const choiceOpts=(good,bad)=>shuffle([...good.map(h=>({h,ok:true})),...bad.map(h=>({h,ok:false}))]);
+function demoPar(kind,lvl,t0){
+  const t=t0||pick(["ai","corr"]);const phi=pick([rnd(57,72),rnd(108,123)]),psi1=rnd(-9,9);
+  const psi2=kind==="non"?psi1+pick([-3,-2,2,3]):psi1;
+  const f=makeF1({phi,psi1,psi2,lab:true,col:true});prep(f);
+  let X,Y,qa,qb;if(t==="corr"){qa=qb=rnd(0,3);}else{[qa,qb]=pick([[2,0],[3,1]]);}
+  X=f.sec.A[qa];Y=f.sec.B[qb];let mX=f.meas.A(qa),mY=f.meas.B(qb);
+  if(Math.random()<.5){[X,Y]=[Y,X];[mX,mY]=[mY,mX];}
+  const x=aName(f,X),y=aName(f,Y),ax=aliases(f,X),ay=aliases(f,Y);
+  f.arcs=kind==="calc"?[{...X,c:"p",label:mX+"°"},{...Y,c:"q",label:"?"}]:[{...X,c:"p",label:mX+"°"},{...Y,c:"v",label:mY+"°"}];
+  const sec="(d) et (d′) sont coupées par la sécante (Δ).";const other=t==="ai"?"corr":"ai";
+  const e={svg:renderFig(f),kind};const S=[];
+  if(kind==="calc"){
+    e.q=`Les droites (d) et (d′) sont parallèles. Détermine la mesure de l’angle ${ang(y)}.`;
+    e.know=`• ${sec}<br>• (d) // (d′).<br>• ${ang(x)} et ${ang(y)} sont ${TT[t]}.<br>• ${ang(x)} = ${mX}°.`;
+    e.prop=PAR_(t);e.concl=`${ang(y)} = ${mX}°.`;
+    if(lvl===1) S.push({t:"D’après l’énoncé, je sais que :",mode:"choice",opts:choiceOpts([e.know],[e.know.replace(TT[t],TT[other]),e.know.replace("(d) // (d′).","(d) ⊥ (Δ).")])});
+    else if(lvl===2) S.push({t:"D’après l’énoncé, je sais que :",mode:"tpl",parts:[`• ${sec}<br>• (d) `,P_(["//","⊥"],0)," (d′).<br>• ",ang(x)," et ",ang(y)," sont ",PT(t),".<br>• ",ang(x)," = ",NUM(mX),"°."]});
+    else S.push({t:"D’après l’énoncé, je sais que :",mode:"tpl",hint:"Écris les noms des angles avec 3 lettres (par exemple ABC).",parts:[`• ${sec}<br>• (d) // (d′).<br>• `,ANG(x,"p",ax)," et ",ANG(y,"p",ay)," sont ",T_(TT[t]),".<br>• ",ANG(x,null,ax)," = ",NUM(mX),"°."]});
+    if(lvl===1) S.push({t:"Propriété :",mode:"choice",opts:choiceOpts([PAR_(t)],[REC_(t),PAR_(other),PAR_(t).replace("de même mesure","supplémentaires")])});
+    else if(lvl===2) S.push({t:"Propriété :",mode:"tpl",parts:["SI deux droites coupées par une sécante sont ",P_(["parallèles","sécantes","perpendiculaires"],0),", ALORS les angles ",PT(t)," qu’elles forment sont ",P_(["de même mesure","supplémentaires","de mesures différentes"],0),"."]});
+    else S.push({t:"Propriété :",mode:"tpl",parts:["SI deux droites coupées par une sécante sont ",T_("parallèles"),", ALORS les angles ",T_(TT[t])," qu’elles forment sont ",T_("de même mesure"),"."]});
+    const others=shuffle([y,x,aName(f,f.sec.B[(qb+1)%4])].filter((v,i,a)=>a.indexOf(v)===i));
+    S.push({t:"Conclusion :",mode:"tpl",parts:[lvl===3?ANG(y,null,ay):{k:"pick",opts:others.map(ang),ok:others.indexOf(y)}," = ",NUM(mX),"°."]});
+  } else {
+    const same=kind==="par";
+    e.q="Les droites (d) et (d′) sont-elles parallèles ? Justifie.";
+    e.know=`• ${sec}<br>• ${ang(x)} et ${ang(y)} sont ${TT[t]} ${same?"et de même mesure":"mais ne sont pas de même mesure"}.`;
+    e.prop=REC_(t);e.concl=`(d) et (d′) ${same?"sont parallèles":"ne sont pas parallèles"}.`;
+    if(lvl===1) S.push({t:"D’après l’énoncé, je sais que :",mode:"choice",opts:choiceOpts([e.know],[e.know.replace(TT[t],TT[other]),
+      same?e.know.replace(TT[t],"opposés par le sommet"):e.know.replace("mais ne sont pas de même mesure","et de même mesure")])});
+    else S.push({t:"D’après l’énoncé, je sais que :",mode:"tpl",hint:lvl===3?"Écris les noms des angles avec 3 lettres.":"",parts:[`• ${sec}<br>• `,lvl===3?ANG(x,"p",ax):ang(x)," et ",lvl===3?ANG(y,"p",ay):ang(y)," sont ",lvl===3?T_(TT[t]):PT(t)," ",P_(["et de même mesure","mais ne sont pas de même mesure"],same?0:1),"."]});
+    if(lvl===1) S.push({t:"Propriété :",mode:"choice",opts:same?choiceOpts([REC_(t)],[PAR_(t),REC_(other),PR.PERP]):choiceOpts([REC_(t),PAR_(t)],[REC_(other),PR.PERP])});
+    else if(lvl===2) S.push({t:"Propriété :",mode:"tpl",parts:["SI deux droites coupées par une sécante forment deux angles ",PT(t)," ",P_(["de même mesure","supplémentaires"],0),", ALORS ces droites sont ",P_(["parallèles","perpendiculaires","sécantes"],0),"."]});
+    else S.push({t:"Propriété :",mode:"tpl",parts:["SI deux droites coupées par une sécante forment deux angles ",T_(TT[t])," ",T_("de même mesure"),", ALORS ces droites sont ",T_("parallèles"),"."]});
+    S.push({t:"Conclusion :",mode:"tpl",parts:["(d) et (d′) ",P_(["sont parallèles","ne sont pas parallèles"],same?0:1),"."]});
+  }
+  e.secs=S;return e;}
+function demoPerp(lvl){
+  const f=Fig();const r=rnd(-12,12),h=rnd(100,125);
+  pt(f,"N",{x:0,y:0});pt(f,"M",{x:0,y:h});pt(f,"I",{x:-150,y:h},{tick:true});pt(f,"K",{x:-150,y:0},{tick:true});
+  pt(f,"M2",{x:0,y:h+45},{tick:true});pt(f,"N2",{x:0,y:-45},{tick:true});f.pts.M2.hide=f.pts.N2.hide=true;
+  line(f,["I","M"],{ext:[14,40]});line(f,["K","N"],{ext:[14,40]});line(f,["M2","M","N","N2"],{ext:[0,0]});
+  f.pts.M2.tick=false;f.pts.N2.tick=false;
+  rotate(f,r);prep(f);f.rights=[{v:"M",a:"I",b:"N"},{v:"N",a:"M",b:"K"}];
+  const IM=`(${N(f,"I")}${N(f,"M")})`,KN=`(${N(f,"K")}${N(f,"N")})`,MN=`(${N(f,"M")}${N(f,"N")})`;
+  const e={svg:renderFig(f),kind:"perp",q:`Démontre que les droites ${IM} et ${KN} sont parallèles.`,
+    know:`• ${IM} ⊥ ${MN}.<br>• ${KN} ⊥ ${MN}.`,prop:PR.PERP,concl:`${IM} // ${KN}.`};const S=[];
+  if(lvl===1) S.push({t:"D’après l’énoncé, je sais que :",mode:"choice",opts:choiceOpts([e.know],[`• ${IM} ⊥ ${KN}.<br>• ${KN} ⊥ ${MN}.`,`• ${IM} // ${MN}.<br>• ${KN} // ${MN}.`])});
+  else S.push({t:"D’après l’énoncé, je sais que :",mode:"tpl",parts:[`• ${IM} `,P_(["⊥","//"],0),` ${MN}.<br>• ${KN} `,P_(["⊥","//"],0),` ${MN}.`]});
+  if(lvl===1) S.push({t:"Propriété :",mode:"choice",opts:choiceOpts([PR.PERP],[PR.PERP2,PR.REC,"SI deux droites sont perpendiculaires à une même droite, ALORS elles sont perpendiculaires entre elles."])});
+  else if(lvl===2) S.push({t:"Propriété :",mode:"tpl",parts:["SI deux droites sont ",P_(["perpendiculaires","parallèles"],0)," à une même droite, ALORS elles sont ",P_(["parallèles","perpendiculaires"],0)," entre elles."]});
+  else S.push({t:"Propriété :",mode:"tpl",parts:["SI deux droites sont ",T_("perpendiculaires")," à une même droite, ALORS elles sont ",T_("parallèles")," entre elles."]});
+  S.push({t:"Conclusion :",mode:"tpl",parts:[P_([`${IM} // ${KN}`,`${IM} ⊥ ${KN}`,`${IM} // ${MN}`],0),"."]});
+  e.secs=S;return e;}
+function demoTri(lvl){
+  const a=rnd(30,80),b=rnd(30,140-a),c=180-a-b;const f=triFig([c,a,b]);rotate(f,rnd(-15,15));prep(f);
+  const A0=aName(f,TA[1]),A1=aName(f,TA[2]),A2=aName(f,TA[0]);const T=N(f,"T0")+N(f,"T1")+N(f,"T2");
+  f.arcs=[{...TA[1],c:"p",label:a+"°"},{...TA[2],c:"b",label:b+"°"},{...TA[0],c:"q",label:"?"}];
+  const e={svg:renderFig(f),kind:"tri",q:`Calcule la mesure de l’angle ${ang(A2)}.`,
+    know:`• ${ang(A0)} = ${a}°.<br>• ${ang(A1)} = ${b}°.`,prop:PR.TRI,concl:`${ang(A2)} = 180 − (${a} + ${b}) = ${c}°.`};const S=[];
+  if(lvl===1) S.push({t:"D’après l’énoncé, je sais que :",mode:"choice",opts:choiceOpts([e.know],[`• ${ang(A0)} = ${a}°.<br>• ${ang(A2)} = ${b}°.`,`• ${ang(A0)} = ${b}°.<br>• ${ang(A1)} = ${a}°.`])});
+  else if(lvl===2) S.push({t:"D’après l’énoncé, je sais que :",mode:"tpl",parts:["• ",ang(A0)," = ",NUM(a),"°.<br>• ",ang(A1)," = ",NUM(b),"°."]});
+  else S.push({t:"D’après l’énoncé, je sais que :",mode:"tpl",hint:`Commence par l’angle de sommet ${N(f,"T1")}.`,parts:["• ",ANG(A0)," = ",NUM(a),"°.<br>• ",ANG(A1)," = ",NUM(b),"°."]});
+  if(lvl===1) S.push({t:"Propriété :",mode:"choice",opts:choiceOpts([PR.TRI],[PR.TRI.replace("180°","90°"),"Dans un triangle, les trois angles ont la même mesure.",PR.PAR])});
+  else if(lvl===2) S.push({t:"Propriété :",mode:"tpl",parts:["Dans un triangle, la ",P_(["somme","différence","moyenne"],0)," des mesures des angles est égale à ",NUM(180),"°."]});
+  else S.push({t:"Propriété :",mode:"tpl",parts:["Dans un triangle, la ",T_("somme")," des mesures des angles est égale à ",NUM(180),"°."]});
+  const all=[A0,A1,A2];
+  if(lvl===1){const cc=shuffle([`180 − (${a} + ${b})`,`180 + ${a} + ${b}`,`${a} + ${b}`]);
+    S.push({t:"Conclusion :",mode:"tpl",hint:"Choisis l’angle, puis le calcul, puis écris le résultat.",parts:[{k:"pick",opts:all.map(ang),ok:2}," = ",{k:"pick",opts:cc,ok:cc.indexOf(`180 − (${a} + ${b})`)}," = ",NUM(c),"°."]});}
+  else S.push({t:"Conclusion :",mode:"tpl",parts:[lvl===3?ANG(A2):{k:"pick",opts:all.map(ang),ok:2}," = 180 − (",NUM(a,"s"),"+",NUM(b,"s"),") = ",NUM(c),"°."]});
+  e.secs=S;return e;}
+const LEVELS=[
+  {n:1,cls:"lvl1",name:"Niveau 1 · Je choisis",goal:"Choisis la bonne phrase pour « D’après l’énoncé, je sais que » et pour la « Propriété », puis complète la conclusion."},
+  {n:2,cls:"lvl2",name:"Niveau 2 · Je complète",goal:"Complète les trous : touche un trou violet pour choisir, ou écris le nombre."},
+  {n:3,cls:"lvl3",name:"Niveau 3 · J’écris",goal:"Écris toi-même les mots, les nombres et le nom des angles (par exemple ABC)."}];
+function newDem(){
+  const plan=[["calc",1,"corr"],["par",1,"ai"],["tri",1],["calc",2,"ai"],["non",2,"corr"],["perp",2],["calc",3],[pick(["par","non"]),3],["tri",3]];
+  state.m6={items:plan.map(([k,l,t])=>{const e=k==="tri"?demoTri(l):k==="perp"?demoPerp(l):demoPar(k,l,t);let id=0;
+    e.secs.forEach(s=>{if(s.parts)s.parts.forEach(p=>{if(typeof p==="object")p.id="b"+(id++);});});
+    return {lvl:l,e,secs:e.secs,vals:{},done:false,res:null};}),i:0,score:0,wrong:[]};}
+function blankHTML(p,it){
+  const v=it.vals[p.id],st=it.done?(it.res.blanks[p.id]?"good":"bad"):"";
+  if(p.k==="pick")return `<button class="pick ${st}" data-id="${p.id}" ${it.done?"disabled":""} aria-haspopup="true">${v!==undefined?p.opts[v]:"…"}</button>`;
+  const cls=p.k==="num"?"fill num":"fill";
+  const w=p.k==="angle"?"4.2em":p.k==="text"?Math.max(5,(p.acc[0]||"").length*.72)+"em":"";
+  return `<input class="${cls} ${st}" data-id="${p.id}" ${w?`style="width:${w}"`:""} ${p.k==="num"?'inputmode="numeric"':""} autocomplete="off" spellcheck="false" value="${v??""}" ${it.done?"disabled":""} aria-label="réponse">`;}
+RENDER[6]=function(){
+  if(!state.m6)newDem();const m=state.m6;const T="Mission 6 · Je démontre";
+  if(m.i>=m.items.length){saveBest("m6",m.score);endScreen(T,m.score,27,"Tes démonstrations sont bien rédigées !","Reprends les applications de ton cours, puis rejoue.",7,()=>{state.m6=null;render();});return;}
+  const it=m.items[m.i],L=LEVELS[it.lvl-1],e=it.e;
+  let h=`<h2>${T}</h2><span class="lvl ${L.cls}">${L.name}</span><p class="goal">${L.goal}</p>
+  <div class="stage"><figure>${e.svg}</figure><div><p class="count">Démonstration ${m.i+1} sur ${m.items.length}</p><p class="question">${e.q}</p><div class="demo">`;
+  it.secs.forEach((s,si)=>{const st=it.done?(it.res.secs[si]?"ok":"ko"):"";
+    h+=`<div class="sec ${st}"><h4>${s.t}</h4>`;if(s.hint)h+=`<p class="hint">${s.hint}</p>`;
+    if(s.mode==="choice"){h+=`<div class="opts" role="radiogroup">`+s.opts.map((o,oi)=>{const sel=it.vals["s"+si]===oi;let c="";
+        if(it.done){if(o.ok&&sel)c="good";else if(sel)c="bad";else if(o.ok&&!s.opts[it.vals["s"+si]].ok)c="good";}
+        return `<button class="opt ${c}" role="radio" aria-checked="${sel}" data-s="${si}" data-o="${oi}" ${it.done?"disabled":""}><span class="dot"></span><span>${o.h}</span></button>`;}).join("")+`</div>`;}
+    else h+=`<div class="tpl">`+s.parts.map(p=>typeof p==="string"?p:blankHTML(p,it)).join("")+`</div>`;
+    h+=`</div>`;});
+  h+=`</div>`;
+  if(!it.done)h+=(it.warn?`<div class="feedback ko pop">Complète toutes les cases avant de valider.</div>`:"")+`<div class="row"><button class="btn" id="val">Valider ma démonstration</button></div>`;
+  else{const n=it.res.secs.filter(Boolean).length;
+    h+=`<div class="feedback ${n===3?"ok":"ko"} pop">${n===3?"Démonstration parfaite ! ★ +3":`${n} partie${n>1?"s":""} juste${n>1?"s":""} sur 3 (★ +${n}). Compare avec la rédaction attendue.`}</div>
+    <div class="redac pop"><p><b>D’après l’énoncé, je sais que :</b><br>${renm(e.know,it)}</p><p><b>Propriété :</b> ${e.prop}</p><p><b>Conclusion :</b> ${renm(e.concl,it)}</p>${it.ren&&Object.keys(it.ren).some(k=>it.ren[k]!==k)?`<p class="hint">Rédaction écrite avec tes noms d’angles : ils sont justes aussi !</p>`:""}</div>
+    <div class="row"><button class="btn" id="nx">${m.i+1<m.items.length?"Démonstration suivante":"Voir mon score"}</button></div>`;}
+  $("#panel").innerHTML=h+`</div></div>`;
+  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{it.vals["s"+b.dataset.s]=+b.dataset.o;render();});
+  document.querySelectorAll(".fill").forEach(inp=>{inp.oninput=()=>{it.vals[inp.dataset.id]=inp.value;};inp.onkeydown=ev=>{if(ev.key==="Enter")$("#val")&&$("#val").click();};});
+  document.querySelectorAll(".pick").forEach(b=>b.onclick=ev=>{ev.stopPropagation();openMenu(b,it);});
+  const v=$("#val");if(v)v.onclick=()=>check(it,m);
+  const nx=$("#nx");if(nx)nx.onclick=()=>{m.i++;render();window.scrollTo({top:0});};};
+function renm(h,it){if(!it.ren)return h;let o=h;Object.entries(it.ren).forEach(([k,v])=>{o=o.split(`<span class="ang">${k}</span>`).join(`<span class="ang">${v}</span>`);});return o;}
+function findBlank(it,id){for(const s of it.secs)if(s.parts)for(const p of s.parts)if(typeof p==="object"&&p.id===id)return p;}
+function openMenu(btn,it){closeMenu();const p=findBlank(it,btn.dataset.id);
+  const menu=document.createElement("div");menu.className="menu";menu.id="menu";menu.setAttribute("role","menu");
+  menu.innerHTML=p.opts.map((o,i)=>`<button role="menuitem" data-i="${i}">${o}</button>`).join("");document.body.appendChild(menu);
+  const r=btn.getBoundingClientRect();
+  menu.style.left=Math.max(8,Math.min(r.left+window.scrollX,window.scrollX+document.documentElement.clientWidth-menu.offsetWidth-8))+"px";
+  menu.style.top=(r.bottom+window.scrollY+6)+"px";
+  menu.querySelectorAll("button").forEach(b=>b.onclick=()=>{it.vals[p.id]=+b.dataset.i;closeMenu();render();});
+  menu.querySelector("button").focus();}
+function closeMenu(){const m=$("#menu");if(m)m.remove();}
+document.addEventListener("click",e=>{if(!e.target.closest("#menu"))closeMenu();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeMenu();});
+function sameAngle(a,b){const x=String(a).toUpperCase().replace(/[^A-Z]/g,""),y=String(b).toUpperCase();
+  return x.length===3&&x[1]===y[1]&&((x[0]===y[0]&&x[2]===y[2])||(x[0]===y[2]&&x[2]===y[0]));}
+function check(it,m){
+  let empty=false;
+  it.secs.forEach((s,si)=>{if(s.mode==="choice"){if(it.vals["s"+si]===undefined)empty=true;}
+    else s.parts.forEach(p=>{if(typeof p==="object"){const v=it.vals[p.id];if(v===undefined||String(v).trim()==="")empty=true;}});});
+  if(empty){it.warn=true;render();return;}
+  it.warn=false;const res={blanks:{},secs:[]};const ren={};it.ren=ren;
+  it.secs.forEach((s,si)=>{
+    if(s.mode==="choice"){res.secs[si]=!!s.opts[it.vals["s"+si]].ok;return;}
+    let all=true;const groups={};
+    s.parts.forEach(p=>{if(typeof p!=="object")return;const v=it.vals[p.id];let ok=false;
+      if(p.k==="pick")ok=v===p.ok;
+      else if(p.k==="text")ok=p.acc.some(a=>norm(a)===norm(v));
+      else if(p.k==="angle"){if(p.g){(groups[p.g]=groups[p.g]||[]).push(p);return;}ok=p.al.some(a=>sameAngle(v,a));if(ok)ren[p.v]=String(v).toUpperCase().replace(/[^A-Z]/g,"");}
+      else if(p.k==="num"){if(p.g){(groups[p.g]=groups[p.g]||[]).push(p);return;}ok=Number(String(v).trim().replace(",","."))===p.v;}
+      res.blanks[p.id]=ok;if(!ok)all=false;});
+    Object.values(groups).forEach(g=>{let ok;
+      if(g[0].k==="angle"){const ins=g.map(p=>it.vals[p.id]);
+        const perms=g.length===2?[[0,1],[1,0]]:[[0]];ok=false;
+        for(const pr of perms){if(pr.every((e,i)=>g[e].al.some(a=>sameAngle(ins[i],a)))){ok=true;pr.forEach((e,i)=>ren[g[e].v]=String(ins[i]).toUpperCase().replace(/[^A-Z]/g,""));break;}}}
+      else{const want=g.map(p=>p.v).sort((a,b)=>a-b).join(","),got=g.map(p=>Number(String(it.vals[p.id]).trim().replace(",","."))).sort((a,b)=>a-b).join(",");ok=want===got;}
+      g.forEach(p=>res.blanks[p.id]=ok);if(!ok)all=false;});
+    res.secs[si]=all;});
+  it.res=res;it.done=true;m.score+=res.secs.filter(Boolean).length;
+  const SN=["la partie « D’après l’énoncé, je sais que »","la propriété","la conclusion"];const bad=res.secs.map((o,i)=>o?null:SN[i]).filter(Boolean);
+  if(bad.length)m.wrong.push(M6TAG[it.e.kind]+" : "+bad.join(", "));render();}
+const M6TAG={calc:"Calculer un angle avec des droites parallèles",par:"Démontrer que deux droites sont parallèles",non:"Démontrer que deux droites ne sont pas parallèles",perp:"Cas particulier : deux droites perpendiculaires à une même droite",tri:"Rédiger le calcul d’un angle dans un triangle"};
+
+/* ---------- Mission 7 · Je m’entraîne comme en classe ---------- */
+const K3=(k,p,c)=>{
+  if(p===PR.PAR||p===PR.REC){const t=/alternes-internes/.test(k)?"ai":"corr";p=p===PR.PAR?PAR_(t):REC_(t);}
+  if(p===PR.TRI)k=k.replace(/^Dans le triangle [A-Z]+, (.+) et (.+)\.$/,"• $1.<br>• $2.");
+  return `<p><b>D’après l’énoncé, je sais que :</b><br>${k}</p><p><b>Propriété :</b> ${p}</p><p><b>Conclusion :</b> ${c}</p>`;};
+const ST2=x=>`<div class="step2">${x}</div>`;
+function fixF1(phi,psi1,psi2,names,rot){const f=makeF1({phi,psi1,psi2});
+  Object.entries(names).forEach(([k,n])=>f.pts[k].name=n);if(rot)rotate(f,rot);return f;}
+const TRF={};
+function trFig(id){if(TRF[id])return TRF[id];let f;
+  if(id==="t1"){f=fixF1(64,0,0,{P1:"K",A:"E",P2:"L",Q1:"P",B:"F",Q2:"Q",S1:"X",S2:"Y"},-6);
+    f.arcs=[{...f.sec.B[0],c:"p",label:"64°"},{...f.sec.A[2],c:"q",label:"?"}];}
+  if(id==="t2"){f=fixF1(128,0,0,{P1:"R",A:"M",P2:"S",Q1:"T",B:"N",Q2:"U",S1:"G",S2:"H"},72);
+    f.arcs=[{...f.sec.A[0],c:"p",label:"128°"},{...f.sec.B[0],c:"q",label:"?"}];}
+  if(id==="t3"){f=fixF1(75,0,-2,{P1:"E",A:"I",P2:"F",Q1:"G",B:"J",Q2:"H",S1:"K",S2:"L"},8);
+    f.arcs=[{...f.sec.A[0],c:"p",label:"75°"},{...f.sec.B[1],c:"o",label:"103°"}];}
+  if(id==="t4"){f=Fig();[["A",0,0],["B",220,0],["C",220,70],["D",120,150],["E",0,150]].forEach(([k,x,y])=>pt(f,k,{x,y},{name:k}));
+    [["A","B"],["B","C"],["C","D"],["D","E"],["E","A"]].forEach(p=>line(f,p,{ext:[0,0]}));
+    f.rights=[{v:"A",a:"B",b:"E"},{v:"B",a:"C",b:"A"},{v:"E",a:"A",b:"D"}];}
+  if(id==="t5"){f=fixF1(62,0,-2,{P1:"R",A:"K",P2:"S",Q1:"U",B:"L",Q2:"V",S1:"W",S2:"X"},-4);
+    f.arcs=[{...f.sec.A[3],c:"v",label:"118°"},{...f.sec.B[0],c:"p",label:"64°"}];}
+  if(id==="t6"){f=Fig();const yE=80,xE=220*(1-yE/166);
+    [["B",0,0],["C",220,0],["A",0,166],["D",0,yE],["E",xE,yE]].forEach(([k,x,y])=>pt(f,k,{x,y},{name:k}));
+    line(f,["A","D","B"],{ext:[0,0]});line(f,["B","C"],{ext:[0,0]});line(f,["A","E","C"],{ext:[0,0]});line(f,["D","E"],{ext:[0,0]});
+    f.rights=[{v:"B",a:"C",b:"A"},{v:"D",a:"E",b:"A"}];f.arcs=[{v:"C",a:"A",b:"B",c:"p",label:"37°",r:30},{v:"E",a:"A",b:"D",c:"q",label:"?",r:20}];}
+  if(id==="t7"){const g=triFig([48,70,62],["R","S","T"]);f=Fig();f.pts=g.pts;
+    pt(f,"U",lerp(f.pts.T0,f.pts.T1,.45),{name:"U"});pt(f,"V",lerp(f.pts.T0,f.pts.T2,.45),{name:"V"});
+    line(f,["T0","U","T1"],{ext:[0,0]});line(f,["T1","T2"],{ext:[0,0]});line(f,["T2","V","T0"],{ext:[0,0]});line(f,["U","V"],{ext:[0,0]});
+    f.arcs=[{...TA[0],c:"a",label:"48°"},{...TA[2],c:"p",label:"62°"},{v:"U",a:"V",b:"T0",c:"q",label:"70°",r:22}];}
+  if(id==="t8"){f=Fig();[["A",0,0],["H",90,0],["B",200,0],["M",90,-60],["N",200,-133.33]].forEach(([k,x,y])=>pt(f,k,{x,y},{name:k}));pt(f,"E",{x:240,y:-160},{name:"E",tick:true});
+    line(f,["A","H","B"],{ext:[0,0]});line(f,["A","M","N","E"],{ext:[0,14]});line(f,["H","M"],{ext:[0,0]});line(f,["B","N"],{ext:[0,0]});
+    f.rights=[{v:"H",a:"B",b:"M"}];f.arcs=[{v:"M",a:"A",b:"H",c:"p",label:"56°",r:22},{v:"N",a:"B",b:"E",c:"b",label:"124°",r:22}];}
+  return TRF[id]=renderFig(f);}
+const CLASS_EX=[
+ {id:"t1",t:"Entraînement 1 · Comme l’application 1",
+  q:`Les droites (KL) et (PQ) sont parallèles. Déterminer la mesure de l’angle ${ang("KEF")}. Justifier.`,
+  check:[{l:`${ang("KEF")} =`,v:64}],
+  aides:[()=>"Repère la sécante : c’est la droite (XY). Les droites parallèles sont (KL) et (PQ).",
+         ()=>`Où sont situés ${ang("KEF")} et ${ang("QFE")} par rapport à la sécante et aux deux droites ?`,
+         ()=>"Ils sont alternes-internes et les droites sont parallèles : utilise la propriété (et non la réciproque)."],
+  corr:()=>K3(`• (KL) et (PQ) sont coupées par la sécante (XY).<br>• (KL) // (PQ).<br>• ${ang("KEF")} et ${ang("QFE")} sont alternes-internes.<br>• ${ang("QFE")} = 64°.`,PR.PAR,`${ang("KEF")} = 64°.`)},
+ {id:"t2",t:"Entraînement 2 · Comme l’application 2",
+  q:`Les droites (RS) et (TU) sont parallèles. Déterminer la mesure de l’angle ${ang("UNM")}. Justifier.`,
+  check:[{l:`${ang("UNM")} =`,v:128}],
+  aides:[()=>"La sécante est la droite (GH). Les droites parallèles sont (RS) et (TU).",
+         ()=>`Compare la position de ${ang("SMG")} et de ${ang("UNM")} : même côté de la sécante ? Lequel est entre les droites ?`,
+         ()=>"Les angles sont correspondants et les droites sont parallèles."],
+  corr:()=>K3(`• (RS) et (TU) sont coupées par la sécante (GH).<br>• (RS) // (TU).<br>• ${ang("SMG")} et ${ang("UNM")} sont correspondants.<br>• ${ang("SMG")} = 128°.`,PR.PAR,`${ang("UNM")} = 128°.`)},
+ {id:"t3",t:"Entraînement 3 · Comme l’exercice 51",
+  q:"Les droites (EF) et (GH) sont-elles parallèles ? Justifier.",
+  check:[{l:`${ang("HJI")} =`,v:77},{l:"(EF) // (GH) ?",yn:true,v:"non"}],
+  aides:[()=>"Les angles de 75° et de 103° ne sont ni alternes-internes, ni correspondants.",
+         ()=>`Les points G, J et H sont alignés : calcule ${ang("HJI")}.`,
+         ()=>`Compare ${ang("FIK")} et ${ang("HJI")} : ce sont deux angles correspondants.`],
+  corr:()=>`<p>G, J et H sont alignés donc ${ang("HJI")} = 180 − 103 = 77°.</p>`+K3(`• (EF) et (GH) sont coupées par la sécante (KL).<br>• ${ang("FIK")} et ${ang("HJI")} sont correspondants mais ne sont pas de même mesure (75° et 77°).`,PR.REC,"(EF) et (GH) ne sont pas parallèles.")},
+ {id:"t4",t:"Entraînement 4 · Comme l’exercice 30",
+  q:`On considère le pentagone ABCDE ci-dessus.<ol class="qlist"><li>Démontrer que les droites (AE) et (BC) sont parallèles.</li><li>Que peut-on dire des droites (ED) et (AB) ? Justifier.</li></ol>`,
+  check:[{l:"1. (AE) // (BC) ?",yn:true,v:"oui"},{l:"2. (ED) // (AB) ?",yn:true,v:"oui"}],
+  aides:[()=>"Regarde les angles droits codés en A, en B et en E.",
+         ()=>"Question 1 : (AE) et (BC) sont toutes les deux perpendiculaires à la même droite (AB).",
+         ()=>"Question 2 : (ED) et (AB) sont toutes les deux perpendiculaires à la même droite (AE)."],
+  corr:()=>`<p><b>1.</b></p>`+K3("• (AE) ⊥ (AB).<br>• (BC) ⊥ (AB).",PR.PERP,"(AE) // (BC).")+ST2(`<p><b>2.</b></p>`+K3("• (ED) ⊥ (AE).<br>• (AB) ⊥ (AE).",PR.PERP,"(ED) // (AB)."))},
+ {id:"t5",t:"Entraînement 5 · Comme l’exercice 61",
+  q:"Les droites (RS) et (UV) sont-elles parallèles ? Justifier.",
+  check:[{l:`${ang("RKL")} =`,v:62},{l:"(RS) // (UV) ?",yn:true,v:"non"}],
+  aides:[()=>"Les angles de 118° et de 64° sont du même côté de la sécante et tous les deux entre les droites : ils ne sont ni alternes-internes, ni correspondants.",
+         ()=>`Les points R, K et S sont alignés : calcule ${ang("RKL")}.`,
+         ()=>`Compare ${ang("RKL")} et ${ang("VLK")} : ce sont des angles alternes-internes.`],
+  corr:()=>`<p>R, K et S sont alignés donc ${ang("RKL")} = 180 − 118 = 62°.</p>`+K3(`• (RS) et (UV) sont coupées par la sécante (WX).<br>• ${ang("RKL")} et ${ang("VLK")} sont alternes-internes mais ne sont pas de même mesure (62° et 64°).`,PR.REC,"(RS) et (UV) ne sont pas parallèles.")},
+ {id:"t6",t:"Entraînement 6 · Comme l’exercice 62",
+  q:`D est sur [AB] et E est sur [AC].<ol class="qlist"><li>Démontrer que les droites (DE) et (BC) sont parallèles.</li><li>En déduire la mesure de l’angle ${ang("AED")}.</li></ol>`,
+  check:[{l:"1. (DE) // (BC) ?",yn:true,v:"oui"},{l:`2. ${ang("AED")} =`,v:37}],
+  aides:[()=>"Question 1 : regarde les angles droits codés en B et en D. À quelle même droite (DE) et (BC) sont-elles perpendiculaires ?",
+         ()=>"Question 2 : maintenant que tu sais que (DE) // (BC), cherche un angle correspondant à l’angle de 37°, avec la sécante (AC).",
+         ()=>`${ang("AED")} et ${ang("ACB")} sont correspondants.`],
+  corr:()=>`<p><b>1.</b></p>`+K3("• (DE) ⊥ (AB).<br>• (BC) ⊥ (AB).",PR.PERP,"(DE) // (BC).")+
+   ST2(`<p><b>2.</b></p>`+K3(`• (DE) et (BC) sont coupées par la sécante (AC).<br>• (DE) // (BC).<br>• ${ang("AED")} et ${ang("ACB")} sont correspondants.<br>• ${ang("ACB")} = 37°.`,PR.PAR,`${ang("AED")} = 37°.`))},
+ {id:"t7",t:"Entraînement 7 · Comme l’exercice 29",
+  q:`U est sur [RS] et V est sur [RT]. Lola pense que les droites (UV) et (ST) ne sont pas parallèles.<ol class="qlist"><li>Calculer la mesure de l’angle ${ang("RVU")}.</li><li>Lola a-t-elle raison ? Justifier.</li><li>Sans calcul, expliquer pourquoi l’angle ${ang("RST")} mesure 70°.</li></ol>`,
+  check:[{l:`1. ${ang("RVU")} =`,v:62},{l:"2. (UV) // (ST) ?",yn:true,v:"oui"},{l:`3. ${ang("RST")} =`,v:70}],
+  aides:[()=>`Question 1 : dans le triangle RUV, tu connais ${ang("URV")} = 48° et ${ang("RUV")} = 70°.`,
+         ()=>`Question 2 : compare ${ang("RVU")} et ${ang("RTS")} = 62° : quelle est leur position par rapport à la sécante (RT) ?`,
+         ()=>`Question 3 : on sait maintenant que (UV) // (ST). ${ang("RUV")} et ${ang("RST")} sont correspondants.`],
+  corr:()=>`<p><b>1.</b></p>`+K3(`Dans le triangle RUV, ${ang("URV")} = 48° et ${ang("RUV")} = 70°.`,PR.TRI,`${ang("RVU")} = 180 − (48 + 70) = 62°.`)+
+   ST2(`<p><b>2.</b></p>`+K3(`• (UV) et (ST) sont coupées par la sécante (RT).<br>• ${ang("RVU")} et ${ang("RTS")} sont correspondants et de même mesure (62°).`,PR.REC,"(UV) // (ST) : Lola a tort."))+
+   ST2(`<p><b>3.</b> (UV) // (ST), et ${ang("RUV")} et ${ang("RST")} sont correspondants (sécante (RS)) : d’après la propriété, ils ont la même mesure, donc ${ang("RST")} = 70°.</p>`)},
+ {id:"t8",t:"Entraînement 8 · Comme l’exercice 63",
+  q:`Les points A, M, N et E sont alignés.<ol class="qlist"><li>Calculer la mesure de l’angle ${ang("MNB")}.</li><li>Les droites (HM) et (BN) sont-elles parallèles ? Justifier.</li><li>Prouver que le triangle ABN est rectangle.</li></ol>`,
+  check:[{l:`1. ${ang("MNB")} =`,v:56},{l:"2. (HM) // (BN) ?",yn:true,v:"oui"}],
+  aides:[()=>`Question 1 : les points M, N et E sont alignés. ${ang("MNB")} et ${ang("BNE")} forment un angle plat.`,
+         ()=>`Question 2 : compare ${ang("AMH")} = 56° et ${ang("MNB")} : ce sont deux angles correspondants (sécante (AE)).`,
+         ()=>"Question 3 : (HM) ⊥ (AB) et (HM) // (BN). Utilise le cas particulier : SI deux droites sont parallèles, ALORS toute droite perpendiculaire à l’une est perpendiculaire à l’autre."],
+  corr:()=>`<p><b>1.</b> M, N et E sont alignés donc ${ang("MNB")} = 180 − 124 = 56°.</p>`+
+   ST2(`<p><b>2.</b></p>`+K3(`• (HM) et (BN) sont coupées par la sécante (AE).<br>• ${ang("AMH")} et ${ang("MNB")} sont correspondants et de même mesure (56°).`,PR.REC,"(HM) // (BN)."))+
+   ST2(`<p><b>3.</b></p>`+K3("• (HM) // (BN).<br>• (AB) ⊥ (HM).",PR.PERP2,"(AB) ⊥ (BN), donc le triangle ABN est rectangle en B."))}];
+function exoBlock(x,st,idPrefix,imgHTML){
+  let h=`<section class="exo"><h3>${x.t}</h3>${imgHTML}`;
+  if(x.check){h+=`<div class="checks"><b>Je vérifie mes résultats :</b>`+x.check.map((c,i)=>{const r=st.chk&&st.chk[i];
+    return `<div class="ck"><span>${c.l}</span>${c.yn?`<select class="fill" data-ck="${i}" data-x="${x.id}" ${st.chkd?"disabled":""}><option value=""></option><option value="oui" ${st.v&&st.v[i]==="oui"?"selected":""}>oui</option><option value="non" ${st.v&&st.v[i]==="non"?"selected":""}>non</option></select>`
+      :`<input class="fill num" data-ck="${i}" data-x="${x.id}" inputmode="decimal" value="${st.v&&st.v[i]!==undefined?st.v[i]:""}" ${st.chkd?"disabled":""}> °`}
+      ${st.chkd?`<span class="res ${r?"ok":"ko"}">${r?"✓ juste":"✗ à revoir"}</span>`:""}</div>`;}).join("")+
+    `<div class="row" style="margin-top:4px">${st.chkd?`<button class="btn ghost" data-act="rechk" data-x="${x.id}">Modifier mes réponses</button>`:`<button class="btn" data-act="chk" data-x="${x.id}">Vérifier</button>`}</div></div>`;}
+  for(let i=0;i<st.a;i++)h+=`<div class="aide pop"><b>Aide ${i+1} :</b> ${x.aides[i]()}</div>`;
+  h+=`<div class="row">`;
+  if(st.a<x.aides.length)h+=`<button class="btn ghost" data-act="aide" data-x="${x.id}">💡 ${st.a===0?"J’ai besoin d’une aide":"Aide suivante"} (${st.a+1}/${x.aides.length})</button>`;
+  h+=`<button class="btn" data-act="corr" data-x="${x.id}">${st.c?"Masquer le corrigé":"Voir le corrigé"}</button></div>`;
+  if(st.c)h+=`<div class="ccorr pop">${x.corr()}</div><p class="hint">Corrige-toi au stylo vert sur ton cahier.</p>`;
+  return h+`</section>`;}
+function bindExo(list,store,re){
+  const get=id=>store[id];
+  document.querySelectorAll('[data-act="aide"]').forEach(b=>b.onclick=()=>{get(b.dataset.x).a++;re();});
+  document.querySelectorAll('[data-act="done"]').forEach(b=>b.onchange=()=>{const s=get(b.dataset.x);s.done=b.checked;if(!s.done)s.c=false;re();});
+  document.querySelectorAll('[data-act="corr"]').forEach(b=>b.onclick=()=>{const s=get(b.dataset.x);s.c=!s.c;re();});
+  document.querySelectorAll('[data-ck]').forEach(i=>{const h=()=>{const s=get(i.dataset.x);(s.v=s.v||[])[+i.dataset.ck]=i.value;};i.oninput=h;i.onchange=h;});
+  document.querySelectorAll('[data-act="chk"]').forEach(b=>b.onclick=()=>{const s=get(b.dataset.x),x=list.find(e=>e.id===b.dataset.x);s.v=s.v||[];
+    s.chk=x.check.map((c,i)=>c.yn?s.v[i]===c.v:Number(String(s.v[i]||"").replace(",","."))===c.v);s.chkd=true;
+    const pts=s.chk.filter(Boolean).length;s.pts=Math.max(s.pts||0,pts);re();});
+  document.querySelectorAll('[data-act="rechk"]').forEach(b=>b.onclick=()=>{get(b.dataset.x).chkd=false;re();});}
+RENDER[7]=function(){
+  let h=`<h2>Mission 7 · Je m’entraîne comme en classe</h2>${coach(["Ces exercices ressemblent à ceux faits en classe, avec de nouvelles figures.","Rédige chaque démonstration sur ton cahier, vérifie tes résultats finaux, corrige tes démonstrations au stylo vert.","Attention à la rédaction et utilise bien le squelette de la démonstration."])}`;
+  CLASS_EX.forEach(x=>{const st=state.ex[x.id]||(state.ex[x.id]={a:0,c:false,done:false});
+    h+=exoBlock(x,st,"ex",`<figure>${trFig(x.id)}</figure><p class="question" style="margin-top:10px">${x.q}</p>`);});
+  h+=`<div class="row"><button class="btn" id="nx">Mode expert</button><button class="btn ghost" id="bl">Voir mon bilan</button></div>`;
+  $("#panel").innerHTML=h;bindExo(CLASS_EX,state.ex,()=>{const y=window.scrollY;render();window.scrollTo({top:y});});
+  $("#nx").onclick=()=>goTab(8);$("#bl").onclick=()=>goTab(9);};
+
+/* ---------- Mode expert ---------- */
+function xpFig(id){
+  const f=Fig();
+  if(id==="x1"){const a=52,b=34;const K={x:0,y:0},J={x:Math.cos(rad(a))*120,y:Math.sin(rad(a))*120},M={x:Math.cos(rad(b))*160,y:-Math.sin(rad(b))*160};
+    pt(f,"D",K,{name:"D"});pt(f,"B",J,{name:"B"});pt(f,"F",M,{name:"F"});
+    pt(f,"A",{x:J.x-180,y:J.y},{tick:true,name:"A"});pt(f,"B2",{x:J.x+100,y:J.y},{tick:true,name:"G"});
+    pt(f,"X",{x:-130,y:0},{tick:true,name:"H"});pt(f,"C",{x:170,y:0},{tick:true,name:"C"});
+    pt(f,"E",{x:M.x-200,y:M.y},{tick:true,name:"E"});pt(f,"F2",{x:M.x+60,y:M.y},{tick:true,name:"K"});
+    line(f,["A","B","B2"]);line(f,["X","D","C"]);line(f,["E","F","F2"]);line(f,["B","D"],{ext:[0,0]});line(f,["D","F"],{ext:[0,0]});
+    f.arcs=[{v:"B",a:"A",b:"D",c:"q",label:"52°"},{v:"F",a:"D",b:"E",c:"v",label:"34°"},{v:"D",a:"B",b:"F",c:"o",label:"?",r:30}];}
+  if(id==="x2"){const ff=triFig([48,67,65],["A","B","C"]);Object.assign(f,ff);
+    pt(f,"M",lerp(f.pts.T0,f.pts.T1,.45),{name:"M"});pt(f,"N",lerp(f.pts.T0,f.pts.T2,.45),{name:"N"});
+    f.lines=[];line(f,["T0","M","T1"],{ext:[0,0]});line(f,["T1","T2"],{ext:[0,0]});line(f,["T2","N","T0"],{ext:[0,0]});line(f,["M","N"],{ext:[0,0]});
+    f.arcs=[{...TA[0],c:"a",label:"48°"},{...TA[2],c:"p",label:"65°"},{v:"M",a:"N",b:"T0",c:"q",label:"67°",r:22}];}
+  if(id==="x3"){const h=90;const Ap={x:0,y:0},Bp={x:170,y:0},Dp={x:0,y:h};const Cp=vadd(Dp,vmul(dir(22),170/Math.cos(rad(22))));
+    pt(f,"A",Ap,{name:"A"});pt(f,"B",Bp,{name:"B"});pt(f,"D",Dp,{name:"D"});pt(f,"C",Cp,{name:"C"});pt(f,"E",vadd(Dp,vmul(dir(22),-70)),{tick:true,name:"E"});
+    line(f,["A","B"],{ext:[0,0]});line(f,["B","C"],{ext:[0,0]});line(f,["A","D"],{ext:[0,0]});line(f,["E","D","C"],{ext:[0,0]});
+    f.rights=[{v:"A",a:"B",b:"D"},{v:"B",a:"C",b:"A"}];f.arcs=[{v:"D",a:"C",b:"A",c:"p",label:"112°",r:24}];}
+  if(id==="x4"){const a=58,b=47,c=58,th=180-a-b,e=180-th-c;const u=dir(168),w=dir(168+th);
+    pt(f,"O",{x:0,y:0},{name:"O"});pt(f,"A",vmul(u,150*Math.sin(rad(b))),{name:"A"});pt(f,"B",vmul(w,150*Math.sin(rad(a))),{name:"B"});
+    pt(f,"D",vmul(u,-125*Math.sin(rad(e))),{name:"D"});pt(f,"C",vmul(w,-125*Math.sin(rad(c))),{name:"C"});
+    line(f,["A","O","D"],{ext:[0,0]});line(f,["B","O","C"],{ext:[0,0]});line(f,["A","B"],{ext:[0,0]});line(f,["C","D"],{ext:[0,0]});
+    f.arcs=[{v:"A",a:"O",b:"B",c:"p",label:"58°"},{v:"B",a:"A",b:"O",c:"b",label:"47°"},{v:"D",a:"C",b:"O",c:"v",label:"58°"}];}
+  if(id==="x5"){const L=130;pt(f,"C",{x:0,y:0},{name:"C"});pt(f,"B",vmul(dir(180),L),{name:"B"});pt(f,"A",vmul(dir(120),L),{name:"A"});pt(f,"D",vmul(dir(30),L),{name:"D"});pt(f,"E",vmul(dir(0),110),{tick:true,name:"E"});
+    line(f,["A","B"],{ext:[0,0]});line(f,["B","C"],{ext:[0,0]});line(f,["C","A"],{ext:[0,0]});line(f,["C","D"],{ext:[0,0]});line(f,["A","D"],{ext:[0,0]});line(f,["C","E"],{ext:[0,14]});
+    f.marks=[["A","B",2],["B","C",2],["C","A",2],["C","D",2]];f.rights=[{v:"C",a:"D",b:"A"}];f.arcs=[{v:"C",a:"E",b:"D",c:"b",label:"30°",r:40}];}
+  return renderFig(f,{H:300});}
+const XP=[
+ {id:"x1",t:"Expert 1 · Trois droites parallèles",
+  q:`Les droites (AB), (HC) et (EF) sont parallèles. Déterminer la mesure de l’angle ${ang("BDF")}. Justifier.`,
+  check:[{l:`${ang("BDF")} =`,v:86}],
+  aides:[()=>`Coupe l’angle ${ang("BDF")} en deux grâce à la demi-droite [DC) : ${ang("BDF")} = ${ang("BDC")} + ${ang("CDF")}.`,
+         ()=>`Avec la sécante (BD) : ${ang("ABD")} et ${ang("BDC")} sont alternes-internes.`,
+         ()=>`Avec la sécante (DF) : ${ang("CDF")} et ${ang("DFE")} sont alternes-internes.`],
+  corr:()=>K3(`• (AB) et (HC) sont coupées par la sécante (BD).<br>• (AB) // (HC).<br>• ${ang("ABD")} et ${ang("BDC")} sont alternes-internes.<br>• ${ang("ABD")} = 52°.`,PR.PAR,`${ang("BDC")} = 52°.`)+
+   ST2(K3(`• (HC) et (EF) sont coupées par la sécante (DF).<br>• (HC) // (EF).<br>• ${ang("CDF")} et ${ang("DFE")} sont alternes-internes.<br>• ${ang("DFE")} = 34°.`,PR.PAR,`${ang("CDF")} = 34°.`))+
+   ST2(`<p>Donc ${ang("BDF")} = ${ang("BDC")} + ${ang("CDF")} = 52 + 34 = 86°.</p>`)},
+ {id:"x2",t:"Expert 2 · Triangle et droite intérieure",
+  q:`M est sur [AB] et N est sur [AC].<ol class="qlist"><li>Calculer la mesure de l’angle ${ang("ABC")}.</li><li>Les droites (MN) et (BC) sont-elles parallèles ? Justifier.</li><li>En déduire la mesure de l’angle ${ang("ANM")}.</li></ol>`,
+  check:[{l:`1. ${ang("ABC")} =`,v:67},{l:"2. (MN) // (BC) ?",yn:true,v:"oui"},{l:`3. ${ang("ANM")} =`,v:65}],
+  aides:[()=>"Question 1 : utilise la somme des angles dans le triangle ABC.",
+         ()=>`Question 2 : ${ang("AMN")} et ${ang("ABC")} sont correspondants, avec la sécante (AB).`,
+         ()=>`Question 3 : (MN) // (BC). ${ang("ANM")} et ${ang("ACB")} sont correspondants, avec la sécante (AC).`],
+  corr:()=>`<p><b>1.</b></p>`+K3(`Dans le triangle ABC, ${ang("BAC")} = 48° et ${ang("ACB")} = 65°.`,PR.TRI,`${ang("ABC")} = 180 − (48 + 65) = 67°.`)+
+   ST2(`<p><b>2.</b></p>`+K3(`• (MN) et (BC) sont coupées par la sécante (AB).<br>• ${ang("AMN")} et ${ang("ABC")} sont correspondants et de même mesure (67°).`,PR.REC,"(MN) // (BC)."))+
+   ST2(`<p><b>3.</b></p>`+K3(`• (MN) et (BC) sont coupées par la sécante (AC).<br>• (MN) // (BC).<br>• ${ang("ANM")} et ${ang("ACB")} sont correspondants.<br>• ${ang("ACB")} = 65°.`,PR.PAR,`${ang("ANM")} = 65°.`))},
+ {id:"x3",t:"Expert 3 · Le quadrilatère",
+  q:`ABCD est un quadrilatère. E est un point de la droite (CD).<ol class="qlist"><li>Démontrer que les droites (AD) et (BC) sont parallèles.</li><li>Calculer la mesure de l’angle ${ang("ADE")}.</li><li>En déduire la mesure de l’angle ${ang("BCD")}. Justifier.</li></ol>`,
+  check:[{l:"1. (AD) // (BC) ?",yn:true,v:"oui"},{l:`2. ${ang("ADE")} =`,v:68},{l:`3. ${ang("BCD")} =`,v:68}],
+  aides:[()=>"Question 1 : (AD) et (BC) sont perpendiculaires à la même droite (AB).",
+         ()=>`Question 2 : E, D et C sont alignés : ${ang("ADE")} et ${ang("ADC")} forment un angle plat.`,
+         ()=>`Question 3 : avec la sécante (EC), ${ang("ADE")} et ${ang("BCD")} sont correspondants.`],
+  corr:()=>`<p><b>1.</b></p>`+K3("• (AD) ⊥ (AB).<br>• (BC) ⊥ (AB).",PR.PERP,"(AD) // (BC).")+
+   ST2(`<p><b>2.</b> E, D et C sont alignés donc ${ang("ADE")} = 180 − 112 = 68°.</p>`)+
+   ST2(`<p><b>3.</b></p>`+K3(`• (AD) et (BC) sont coupées par la sécante (EC).<br>• (AD) // (BC).<br>• ${ang("ADE")} et ${ang("BCD")} sont correspondants.<br>• ${ang("ADE")} = 68°.`,PR.PAR,`${ang("BCD")} = 68°.`))},
+ {id:"x4",t:"Expert 4 · Le papillon",
+  q:`Les points A, O, D sont alignés, ainsi que B, O, C.<ol class="qlist"><li>Calculer la mesure de l’angle ${ang("AOB")}.</li><li>En déduire la mesure de l’angle ${ang("COD")}.</li><li>Calculer la mesure de l’angle ${ang("OCD")}.</li><li>Les droites (AB) et (CD) sont-elles parallèles ? Justifier.</li></ol>`,
+  check:[{l:`1. ${ang("AOB")} =`,v:75},{l:`2. ${ang("COD")} =`,v:75},{l:`3. ${ang("OCD")} =`,v:47},{l:"4. (AB) // (CD) ?",yn:true,v:"oui"}],
+  aides:[()=>"Question 1 : somme des angles dans le triangle AOB.",
+         ()=>`Question 2 : ${ang("AOB")} et ${ang("COD")} sont opposés par le sommet.`,
+         ()=>`Question 4 : avec la sécante (AD), compare ${ang("BAO")} et ${ang("ODC")}. Sont-ils alternes-internes ?`],
+  corr:()=>`<p><b>1.</b></p>`+K3(`Dans le triangle AOB, ${ang("OAB")} = 58° et ${ang("OBA")} = 47°.`,PR.TRI,`${ang("AOB")} = 180 − (58 + 47) = 75°.`)+
+   ST2(`<p><b>2.</b> ${ang("AOB")} et ${ang("COD")} sont opposés par le sommet, donc ${ang("COD")} = 75°.</p>`)+
+   ST2(`<p><b>3.</b></p>`+K3(`Dans le triangle COD, ${ang("COD")} = 75° et ${ang("ODC")} = 58°.`,PR.TRI,`${ang("OCD")} = 180 − (75 + 58) = 47°.`))+
+   ST2(`<p><b>4.</b></p>`+K3(`• (AB) et (CD) sont coupées par la sécante (AD).<br>• ${ang("BAO")} et ${ang("ODC")} sont alternes-internes et de même mesure (58°).`,PR.REC,"(AB) // (CD)."))},
+ {id:"x5",t:"Expert 5 · Les points sont-ils alignés ?",
+  q:`<ol class="qlist"><li>Quelle est la nature des triangles ABC et ACD ? Donner la mesure de l’angle ${ang("BCA")}.</li><li>Calculer la mesure de l’angle ${ang("BCE")}.</li><li>Les points B, C et E sont-ils alignés ? Justifier.</li><li>Calculer la mesure de l’angle ${ang("CAD")}.</li></ol>`,
+  check:[{l:`1. ${ang("BCA")} =`,v:60},{l:`2. ${ang("BCE")} =`,v:180},{l:"3. B, C, E alignés ?",yn:true,v:"oui"},{l:`4. ${ang("CAD")} =`,v:45}],
+  aides:[()=>"Question 1 : lis le codage. ABC a trois côtés de même longueur ; ACD a deux côtés de même longueur et un angle droit.",
+         ()=>`Question 2 : ${ang("BCE")} = ${ang("BCA")} + ${ang("ACD")} + ${ang("DCE")}.`,
+         ()=>`Question 4 : ACD est rectangle et isocèle en C : ses deux angles aigus sont égaux et leur somme vaut 90°.`],
+  corr:()=>`<p><b>1.</b> ABC est équilatéral et ACD est rectangle isocèle en C.</p>`+K3("Le triangle ABC est équilatéral.","Dans un triangle équilatéral, chaque angle mesure 60°.",`${ang("BCA")} = 60°.`)+
+   ST2(`<p><b>2.</b> ${ang("BCE")} = ${ang("BCA")} + ${ang("ACD")} + ${ang("DCE")} = 60 + 90 + 30 = 180°.</p>`)+
+   ST2(`<p><b>3.</b> ${ang("BCE")} = 180° : c’est un angle plat, donc les points B, C et E sont alignés.</p>`)+
+   ST2(`<p><b>4.</b></p>`+K3("Le triangle ACD est rectangle et isocèle en C.","Dans un triangle isocèle, les angles à la base ont la même mesure. Dans un triangle rectangle, la somme des deux angles aigus est égale à 90°.",`${ang("CAD")} = ${ang("CDA")} = 90 ÷ 2 = 45°.`))}];
+RENDER[8]=function(){
+  let h=`<h2>Mode expert · Pour aller plus loin</h2><p class="expert-banner">🏆 Facultatif : des configurations plus complexes, avec parfois plusieurs étapes de démonstration. Rédige sur ton cahier, vérifie tes résultats, puis regarde le corrigé pour éventuellement te rendre compte de tes erreurs.</p>
+  ${coach(["Pour chaque figure, cherche d’abord ce que tu peux calculer tout de suite (angle plat, opposé par le sommet, somme dans un triangle…).","Ensuite, rédige les démonstrations."])}`;
+  XP.forEach(x=>{const st=state.xp[x.id]||(state.xp[x.id]={a:0,c:false,done:false});
+    h+=exoBlock(x,st,"xp",`<figure>${xpFig(x.id)}</figure><p class="question" style="margin-top:10px">${x.q}</p>`);});
+  h+=`<div class="row"><button class="btn" id="nx">Voir mon bilan</button></div>`;
+  $("#panel").innerHTML=h;bindExo(XP,state.xp,()=>{const y=window.scrollY;render();window.scrollTo({top:y});});$("#nx").onclick=()=>goTab(9);};
+
+/* ---------- Bilan ---------- */
+function exStats(list,store){let score=0,done=0;const bad=[];
+  list.forEach(x=>{const st=store[x.id];if(st&&st.chkd&&st.chk){done+=st.chk.length;const n=st.chk.filter(Boolean).length;score+=n;if(n<st.chk.length)bad.push(x.t);}});
+  return {score,done,bad};}
+function missionStats(){
+  const q=(k,ansDone)=>{const m=state[k];if(!m)return {score:0,done:0,wrong:[]};const d=Math.min(m.items.length,m.i+(ansDone(m)?1:0));return {score:m.score,done:d,wrong:m.wrong||[]};};
+  const m6=state.m6?{score:state.m6.score,done:state.m6.items.filter(it=>it.done).length*3,wrong:state.m6.wrong||[]}:{score:0,done:0,wrong:[]};
+  const m4=state.m4?{score:m4score(),done:state.m4.cards.reduce((s,c,i)=>s+(c.checked?M4[i].ans.length:0),0),
+    wrong:state.m4.cards.map((c,i)=>c.checked&&c.score<M4[i].ans.length?"Connaître par cœur : "+M4[i].t.toLowerCase():null).filter(Boolean)}:{score:0,done:0,wrong:[]};
+  const ex=exStats(CLASS_EX,state.ex),xp=exStats(XP,state.xp);
+  return [
+   {t:"Mission 1 · Le vocabulaire",max:8,...q("m1",m=>m.ans!==null),fort:"Tu maîtrises le vocabulaire des angles de 6ème.",adv:"Relis la page « Vocabulaire des angles » de ton cours, puis rejoue la mission 1."},
+   {t:"Mission 2 · Je reconnais les angles",max:9,...q("m2",m=>m.ans!==null),fort:"Tu reconnais les angles alternes-internes et correspondants, même dans des figures complexes.",adv:"Repère d’abord la sécante (la droite qui passe par les deux sommets), puis regarde les côtés de la sécante et l’intérieur des deux droites."},
+   {t:"Mission 3 · Je justifie",max:6,...q("m3",m=>m.done),fort:"Tu sais justifier avec la définition pourquoi des angles ne sont pas alternes-internes ou correspondants.",adv:"Apprends les 3 conditions de chaque définition et vérifie-les une par une : n’oublie aucune raison."},
+   {t:"Mission 4 · Mon cours par cœur",max:19,...m4,fort:"Tu connais les définitions et les propriétés du cours par cœur.",adv:"Recopie les propriétés sans regarder ton cours, puis compare et corrige."},
+   {t:"Mission 5 · Je trouve la mesure",max:12,...q("m5",m=>m.done),fort:"Tu trouves rapidement la mesure d’un angle, même dans des configurations complexes.",adv:"Lis l’explication de chaque erreur, puis rejoue la mission 5 avec de nouvelles figures."},
+   {t:"Mission 6 · Je démontre",max:27,...m6,fort:"Tu rédiges correctement tes démonstrations en 3 étapes.",adv:"Reprends les applications de ton cours : D’après l’énoncé, je sais que / Propriété / Conclusion."},
+   {t:"Mission 7 · Je m’entraîne",max:CLASS_EX.reduce((a,x)=>a+x.check.length,0),score:ex.score,done:ex.done,wrong:ex.bad.map(b=>b+" : relis le corrigé et refais l’exercice"),fort:"Tu réussis les exercices d’entraînement comme en classe.",adv:"Utilise les aides une par une, puis refais l’exercice sans regarder le corrigé."},
+   {t:"Mode expert",max:XP.reduce((a,x)=>a+x.check.length,0),score:xp.score,done:xp.done,wrong:xp.bad.map(b=>b+" : relis le corrigé"),fort:"Tu réussis des configurations complexes : bravo !",adv:"Cherche d’abord ce que tu peux calculer tout de suite, puis enchaîne les démonstrations.",opt:true}];}
+RENDER[9]=function(){
+  const S=missionStats(),D=S.filter(m=>m.done>0);
+  const sc=D.reduce((a,m)=>a+m.score,0),dn=D.reduce((a,m)=>a+m.done,0),pct=dn?Math.round(100*sc/dn):0;
+  const P=m=>Math.round(100*m.score/m.done);
+  let h=`<h2>Mon bilan</h2>`;
+  if(!D.length){$("#panel").innerHTML=h+`<p class="goal">Fais au moins une mission : ton bilan apparaîtra ici, avec ton taux de réussite, tes points forts et les points à retravailler.</p><div class="row"><button class="btn" id="go">Commencer la mission 1</button></div>`;$("#go").onclick=()=>goTab(1);return;}
+  const msg=pct>=80?"Tes connaissances sont solides : tu es prêt pour l’évaluation !":pct>=60?"C’est bien parti. Travaille les points ci-dessous, puis rejoue les missions.":"Relis ton cours, puis refais les missions une par une, dans l’ordre.";
+  h+=`<div class="rate"><div class="pct">${pct} %</div><div><b>Taux de réussite global</b> (${sc} réponse${sc>1?"s":""} juste${sc>1?"s":""} sur ${dn})<div class="bar" style="margin:8px 0 6px"><span style="width:${pct}%"></span></div>${msg}</div></div>`;
+  h+=`<section class="cpart"><h3>Détail par mission</h3>`+S.map(m=>`<div class="mrow"><span>${m.t}${m.opt?" (facultatif)":""}</span>
+     <b>${m.done?P(m)+" %":"—"}</b><span>${m.done?`<div class="bar"><span style="width:${P(m)}%;background:${P(m)>=80?"var(--green)":P(m)>=60?"var(--orange)":"var(--red)"}"></span></div>`:`<span class="best">pas encore faite</span>`}</span></div>`).join("")+`</section>`;
+  const forts=D.filter(m=>P(m)>=80);
+  const top=(m,n)=>{const cnt={};m.wrong.forEach(w=>cnt[w]=(cnt[w]||0)+1);return Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,n).map(e=>e[0]);};
+  h+=`<div class="forts"><h3>✅ Mes points forts</h3>${forts.length?`<ul>${forts.map(m=>{const pf=top(m,2);return `<li>${m.fort} <span class="best">(${m.t} : ${P(m)} %)</span>${pf.length?`<br><span class="adv">Pour atteindre 100 %, revois juste : ${pf.join(" ; ")}.</span>`:""}</li>`;}).join("")}</ul>`:`<p style="margin:0">Pas encore de mission réussie à 80 % : continue, chaque essai te fait progresser !</p>`}</div>`;
+  const axes=D.filter(m=>P(m)<80);
+  const notDone=S.filter(m=>!m.done&&!m.opt);
+  h+=`<div class="axes"><h3>🎯 Points à retravailler</h3>`;
+  if(!axes.length&&!notDone.length) h+=`<p style="margin:0">Aucune mission sous 80 % : bravo ! Tente le mode expert si ce n’est pas déjà fait.</p>`;
+  else{h+=`<ul>`;
+    axes.forEach(m=>{const cnt={};m.wrong.forEach(w=>cnt[w]=(cnt[w]||0)+1);const th=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,3);
+      h+=`<li><b>${m.t}</b> (${P(m)} %)${th.length?`<ul>${th.map(([w,n])=>`<li>${w}${n>1?` (${n} erreurs)`:""}</li>`).join("")}</ul>`:""}<span class="adv">Conseil : ${m.adv}</span></li>`;});
+    if(notDone.length) h+=`<li><b>Missions pas encore faites :</b> ${notDone.map(m=>m.t.split(" · ")[0]).join(", ")}.</li>`;
+    h+=`</ul>`;}
+  h+=`</div>`;
+  h+=`<div class="memo"><h3>Je retiens</h3><ul>
+    <li><b>Alternes-internes :</b> de part et d’autre de la sécante, entre les deux droites, pas le même sommet.</li>
+    <li><b>Correspondants :</b> du même côté de la sécante, un seul angle entre les deux droites, pas le même sommet.</li>
+    <li>${PR.PAR}</li><li>${PR.REC}</li><li>${PR.PERP}</li><li>${PR.TRI}</li>
+    <li>Je rédige en 3 étapes : <b>D’après l’énoncé, je sais que</b>, <b>Propriété</b>, <b>Conclusion</b>.</li></ul></div>
+  <div class="row"><button class="btn" id="rst">Tout recommencer</button></div>`;
+  $("#panel").innerHTML=h;
+  $("#rst").onclick=()=>{Object.assign(state,{m1:null,m2:null,m3:null,m4:null,m5:null,m6:null,ex:{},xp:{}});goTab(0);};};
+
+/* ---------- Confort de lecture ---------- */
+const CONF_KEY="mra-confort-v1";
+let conf={scale:1,font:false,space:false,bg:"cartes",grid:false,key:true,audio:false};
+try{const c=JSON.parse(localStorage.getItem(CONF_KEY)||"null");if(c)conf={...conf,...c};}catch(e){}
+if(!["cartes","blanc","bleu","lavande"].includes(conf.bg))conf.bg="cartes";
+function saveConf(){try{localStorage.setItem(CONF_KEY,JSON.stringify(conf));}catch(e){}}
+function applyConf(){const r=document.documentElement;r.style.setProperty("--scale",conf.scale);
+  r.dataset.font=conf.font?"lexend":"";r.dataset.space=conf.space?"1":"";r.dataset.bg=conf.bg;r.dataset.grid=conf.grid?"1":"0";r.dataset.key=conf.key?"1":"";
+  document.querySelectorAll("#swatches .sw").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.bg===conf.bg)));
+  document.querySelectorAll("#sizes button").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.s===conf.scale)));
+  document.querySelectorAll("#cpanel .switch").forEach(i=>i.checked=!!conf[i.dataset.opt]);}
+$("#cbtn").onclick=e=>{e.stopPropagation();const p=$("#cpanel");p.hidden=!p.hidden;$("#cbtn").setAttribute("aria-expanded",String(!p.hidden));};
+$("#cpanel").onclick=e=>e.stopPropagation();
+document.addEventListener("click",()=>{const p=$("#cpanel");if(!p.hidden){p.hidden=true;$("#cbtn").setAttribute("aria-expanded","false");}});
+document.querySelectorAll("#sizes button").forEach(b=>b.onclick=()=>{conf.scale=+b.dataset.s;saveConf();applyConf();});
+document.querySelectorAll("#swatches .sw").forEach(b=>b.onclick=()=>{conf.bg=b.dataset.bg;saveConf();applyConf();});
+document.querySelectorAll("#cpanel .switch").forEach(i=>i.onchange=()=>{conf[i.dataset.opt]=i.checked;saveConf();applyConf();
+  if(i.dataset.opt==="audio"||i.dataset.opt==="key")render();if(!conf.audio&&window.speechSynthesis)speechSynthesis.cancel();});
+const KW=["alternes-internes","correspondants","opposés par le sommet","adjacents","supplémentaires","sécante","parallèles","perpendiculaires","de part et d’autre","du même côté","entre les deux droites","même sommet","angle plat","alignés","bissectrice","D’après l’énoncé, je sais que","Propriété","Conclusion","180°","90°"];
+function markKeywords(root){
+  const rx=new RegExp("("+KW.map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).sort((a,b)=>b.length-a.length).join("|")+")","g");
+  root.querySelectorAll(".goal,.question,.bubble p,.prop,.hint,.phrase").forEach(el=>{
+    const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest("button,input,select,.kw,.ang,svg")?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});
+    const nodes=[];while(w.nextNode())nodes.push(w.currentNode);
+    nodes.forEach(n=>{if(!rx.test(n.nodeValue))return;rx.lastIndex=0;
+      const span=document.createElement("span");span.innerHTML=n.nodeValue.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(rx,'<span class="kw">$1</span>');
+      n.replaceWith(...span.childNodes);});});}
+function speakText(el){const c=el.cloneNode(true);
+  c.querySelectorAll(".say,svg,.menu,img").forEach(x=>x.remove());
+  c.querySelectorAll(".ang").forEach(a=>a.textContent=" l’angle "+a.textContent.split("").join(" ")+" ");
+  c.querySelectorAll("input,select").forEach(i=>i.replaceWith(i.value?" "+i.value+" ":" trou "));
+  c.querySelectorAll(".pick,.blank").forEach(b=>b.textContent=(b.textContent.trim()==="…")?" trou ":" "+b.textContent+" ");
+  c.querySelectorAll(".opt,.choice").forEach(o=>o.append(". "));
+  c.querySelectorAll("h3,h4,.tag,.hint,p,li").forEach(h=>h.append(" "));
+  return c.textContent.replace(/°/g," degrés").replace(/−/g," moins ").replace(/÷/g," divisé par ").replace(/\/\//g," parallèle à ").replace(/⊥/g," perpendiculaire à ").replace(/…/g," ").replace(/\s+/g," ").trim();}
+function say(btn,el){if(!window.speechSynthesis)return;const was=btn.classList.contains("on");
+  speechSynthesis.cancel();document.querySelectorAll(".say.on").forEach(b=>b.classList.remove("on"));if(was)return;
+  const u=new SpeechSynthesisUtterance(speakText(el));u.lang="fr-FR";u.rate=.9;
+  const v=speechSynthesis.getVoices().find(v=>v.lang&&v.lang.startsWith("fr"));if(v)u.voice=v;
+  u.onend=u.onerror=()=>btn.classList.remove("on");btn.classList.add("on");speechSynthesis.speak(u);}
+function addSpeakers(root){if(!conf.audio||!window.speechSynthesis)return;
+  root.querySelectorAll(".goal,.question,.bubble,.prop,.sec,.redac,.feedback,.aide,.ccorr,.memo,.phrase").forEach(el=>{
+    const b=document.createElement("button");b.className="say";b.type="button";b.setAttribute("aria-label","Écouter");b.textContent="🔊";
+    b.onclick=e=>{e.stopPropagation();say(b,el);};const head=el.querySelector("h3,h4,.tag");(head||el).appendChild(b);});}
+function enhance(){const p=$("#panel");if(conf.key)markKeywords(p);addSpeakers(p);}
+applyConf();
+render();
+
+</script>
+</body>
+</html>
